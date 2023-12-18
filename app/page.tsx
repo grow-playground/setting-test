@@ -31,12 +31,6 @@ export default async function Index() {
         </div>
       </nav>
 
-      <div>
-        {[1, 2, 3, 45].map((item) => (
-          <div key={item}>12312312312</div>
-        ))}
-      </div>
-
       <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
         <Header />
         <main className="flex flex-1 flex-col gap-6">
