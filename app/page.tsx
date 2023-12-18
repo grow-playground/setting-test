@@ -30,7 +30,6 @@ export default async function Index() {
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>
-      <div>test commit</div>
 
       <div className="animate-in flex max-w-4xl flex-1 flex-col gap-20 px-3 opacity-0">
         <Header />
