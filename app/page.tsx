@@ -2,24 +2,17 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import KakaoButton from './auth/callback/kakao-button';
 
-export default async function Index() {
+export default async function Page() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: user } = await supabase.auth.getUser();
 
   const signOut = async () => {
     'use server';
 
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-
     await supabase.auth.signOut();
   };
-
-  console.log(user);
 
   return (
     <div className="flex w-full flex-1 flex-col items-center gap-20">
