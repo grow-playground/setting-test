@@ -1,15 +1,15 @@
 'use client';
 
-import { useGetQuiz } from '@/hooks/quiz';
+import { useGetQuizzes } from '@/hooks/quiz';
 
 export function Quiz() {
-  const { data: quiz } = useGetQuiz();
+  const { data: quizzes } = useGetQuizzes();
 
-  console.log(quiz);
+  console.log(quizzes);
   return (
     <div>
       <div>나는 클라이언트 컴포넌트에서 불러온 값!</div>
-      {JSON.stringify(quiz)}
+      {JSON.stringify(quizzes)}
     </div>
   );
 }
