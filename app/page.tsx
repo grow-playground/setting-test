@@ -2,14 +2,19 @@ import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import KakaoButton from './auth/callback/kakao-button';
 
-export default async function Page() {
+export default async function Index() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
-  const { data: user } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const signOut = async () => {
     'use server';
+
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
 
     await supabase.auth.signOut();
   };
