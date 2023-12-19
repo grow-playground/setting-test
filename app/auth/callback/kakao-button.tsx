@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/common/buttons/button';
 import { createClient } from '@/utils/supabase/client';
 
 export default function KakaoButton() {
@@ -14,12 +15,5 @@ export default function KakaoButton() {
     });
   };
 
-  return (
-    <button
-      onClick={signInWithKakao}
-      className="w-full rounded-xl bg-slate-100 px-4 py-2"
-    >
-      카카오 로그인
-    </button>
-  );
+  return <Button onClick={signInWithKakao}>카카오 로그인</Button>;
 }
