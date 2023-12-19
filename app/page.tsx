@@ -20,17 +20,60 @@ export default async function Index() {
   };
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center gap-20">
-      {user ? (
-        <form
-          className="w-full rounded-xl bg-slate-100 px-4 py-2 text-center"
-          action={signOut}
-        >
-          <button>로그아웃</button>
-        </form>
-      ) : (
-        <KakaoButton />
-      )}
-    </div>
+    <>
+      <header className="sticky top-0 h-12 bg-sky-200">나는 헤더</header>
+      <main>
+        {user ? (
+          <form
+            className="w-full rounded-xl bg-slate-100 px-4 py-2 text-center"
+            action={signOut}
+          >
+            <button>로그아웃</button>
+          </form>
+        ) : (
+          <KakaoButton />
+        )}
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, libero
+          impedit ipsum at dolores hic, eos officiis qui quam laborum ipsa
+          harum. Sed officiis, expedita doloremque repudiandae vero eum
+          aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, libero
+          impedit ipsum at dolores hic, eos officiis qui quam laborum ipsa
+          harum. Sed officiis, expedita doloremque repudiandae vero eum
+          aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Nisi, libero impedit ipsum at dolores hic, eos officiis qui quam
+          laborum ipsa harum. Sed officiis, expedita doloremque repudiandae vero
+          eum aspernatur. eum aspernatur. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Nisi, libero impedit ipsum at dolores hic, eos
+          officiis qui quam laborum ipsa harum. Sed officiis, expedita
+          doloremque repudiandae vero eum aspernatur. asdasdasdasdasdasd
+        </div>
+      </main>
+      <div className="sticky bottom-0 h-12 bg-sky-200">나는 바텀시트</div>
+    </>
   );
 }
