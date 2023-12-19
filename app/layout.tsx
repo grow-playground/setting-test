@@ -9,7 +9,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: '타입타임: 타입과 함께 시간을 더욱 가치있게, ',
+  title: '타입타임: 타입과 함께 시간을 더욱 가치있게',
   description: '타입스크립트의 세계로 초대합니다!',
 };
 

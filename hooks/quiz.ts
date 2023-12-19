@@ -5,7 +5,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 export async function getQuiz() {
   const supabase: SupabaseClient<Database> = createClient();
 
-  const { data } = await supabase.from('notes').select('*');
+  const { data } = await supabase.from('quizzes').select('*');
 
   return data;
 }
