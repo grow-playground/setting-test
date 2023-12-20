@@ -2,16 +2,17 @@
 
 import React, { useState } from 'react';
 import { useGetChoicesOfQuiz, postQuizSubmission } from '@/hooks/quiz';
-import Button from '@/components/common/buttons/button';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import Button from '@/components/common/buttons/button';
+import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
 
 export default function ChoiceForm({ quizId }: { quizId: number }) {
   const { data: choices } = useGetChoicesOfQuiz(quizId);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: postQuizSubmission,
     onSuccess: () => router.push(`/quizzes/${quizId}/answer`),
     onError: (error) => setErrorMessage(error.message),
@@ -54,7 +55,12 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
       {errorMessage ? (
         <p className="my-2 text-red-500">{errorMessage}</p>
       ) : null}
-      <Button className="mt-4 w-full">제출하기</Button>
+      <Button
+        className="mt-4 flex h-10 w-full items-center justify-center disabled:bg-blue-500"
+        disabled={isPending}
+      >
+        {isPending ? <LoadingSpinner size="lg" weight="sm" /> : '제출하기'}
+      </Button>
     </form>
   );
 }
