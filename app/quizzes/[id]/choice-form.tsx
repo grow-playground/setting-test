@@ -12,7 +12,7 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: postQuizSubmission,
     onSuccess: () => router.push(`/quizzes/${quizId}/answer`),
     onError: (error) => setErrorMessage(error.message),
@@ -57,9 +57,15 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
       ) : null}
       <Button
         className="mt-4 flex h-10 w-full items-center justify-center disabled:bg-blue-500"
-        disabled={isPending}
+        disabled={isPending || isSuccess}
       >
-        {isPending ? <LoadingSpinner size="lg" weight="sm" /> : '제출하기'}
+        {isSuccess ? (
+          '성공!'
+        ) : isPending ? (
+          <LoadingSpinner size="lg" weight="sm" />
+        ) : (
+          '제출하기'
+        )}
       </Button>
     </form>
   );
