@@ -1,16 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetChoicesOfQuiz, upsertQuizSubmission } from '@/hooks/quiz';
+import { useGetChoicesOfQuiz, postQuizSubmission } from '@/hooks/quiz';
 import Button from '@/components/common/buttons/button';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 export default function ChoiceForm({ quizId }: { quizId: number }) {
   const { data: choices } = useGetChoicesOfQuiz(quizId);
   const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
 
-  const { mutateAsync } = useMutation({
-    mutationFn: upsertQuizSubmission,
+  const { mutate } = useMutation({
+    mutationFn: postQuizSubmission,
+    onSuccess: () => router.push(`/quizzes/${quizId}/answer`),
+    onError: (error) => setErrorMessage(error.message),
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,18 +31,10 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
       return;
     }
 
-    await mutateAsync({
+    mutate({
       quizId,
       choiceId: choice.id,
-      success: choice.answer,
     });
-
-    if (!choice.answer) {
-      setErrorMessage('틀렸어요! 다시 고민해주세요.');
-      return;
-    }
-
-    console.log(choice);
   };
 
   return (

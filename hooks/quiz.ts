@@ -9,6 +9,7 @@ export async function getQuiz(id: number) {
     .from('quizzes')
     .select(`*, users (id, name)`)
     .eq('id', id)
+    .limit(1)
     .single();
 
   return data;
@@ -25,26 +26,27 @@ export async function getChoicesOfQuiz(quizId: number) {
   return data;
 }
 
-export async function upsertQuizSubmission(params: {
+export async function postQuizSubmission(params: {
   quizId: number;
   choiceId: number;
-  success: boolean;
 }) {
-  const { quizId, choiceId, success } = params;
+  const { quizId, choiceId } = params;
 
-  const supabase: SupabaseClient<Database> = createClient();
+  const res = await fetch('/api/quiz-submission', {
+    method: 'POST',
+    body: JSON.stringify({
+      quizId,
+      choiceId,
+    }),
+  });
 
-  const { data } = await supabase
-    .from('quizsubmissions')
-    .upsert({
-      quiz_id: quizId,
-      choice_id: choiceId,
-      success,
-      updated_at: new Date().toISOString(),
-    })
-    .select();
+  const json = await res.json();
 
-  return data;
+  if (!res.ok) {
+    throw new Error(json.error);
+  }
+
+  return json;
 }
 
 export function useGetQuiz(id: number) {
