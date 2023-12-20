@@ -9,54 +9,24 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      answers: {
-        Row: {
-          choice_id: number;
-          description: string;
-          id: number;
-          quiz_id: number;
-        };
-        Insert: {
-          choice_id: number;
-          description: string;
-          id?: number;
-          quiz_id: number;
-        };
-        Update: {
-          choice_id?: number;
-          description?: string;
-          id?: number;
-          quiz_id?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'answers_choice_id_fkey';
-            columns: ['choice_id'];
-            isOneToOne: false;
-            referencedRelation: 'choices';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'answers_quiz_id_fkey';
-            columns: ['quiz_id'];
-            isOneToOne: true;
-            referencedRelation: 'quizzes';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
       choices: {
         Row: {
+          answer: boolean;
+          answer_description: string | null;
           description: string;
           id: number;
           quiz_id: number;
         };
         Insert: {
+          answer?: boolean;
+          answer_description?: string | null;
           description: string;
           id?: number;
           quiz_id: number;
         };
         Update: {
+          answer?: boolean;
+          answer_description?: string | null;
           description?: string;
           id?: number;
           quiz_id?: number;
@@ -75,16 +45,27 @@ export interface Database {
         Row: {
           id: number;
           title: string | null;
+          user_id: string | null;
         };
         Insert: {
           id?: number;
           title?: string | null;
+          user_id?: string | null;
         };
         Update: {
           id?: number;
           title?: string | null;
+          user_id?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'notes_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       questions: {
         Row: {
@@ -131,27 +112,24 @@ export interface Database {
       quizsubmissions: {
         Row: {
           created_at: string;
-          id: number;
-          quiz_id: number | null;
+          quiz_id: number;
           success: boolean;
           updated_at: string;
-          user_id: string | null;
+          user_id: string;
         };
         Insert: {
           created_at?: string;
-          id?: number;
-          quiz_id?: number | null;
-          success: boolean;
+          quiz_id: number;
+          success?: boolean;
           updated_at?: string;
-          user_id?: string | null;
+          user_id: string;
         };
         Update: {
           created_at?: string;
-          id?: number;
-          quiz_id?: number | null;
+          quiz_id?: number;
           success?: boolean;
           updated_at?: string;
-          user_id?: string | null;
+          user_id?: string;
         };
         Relationships: [
           {
