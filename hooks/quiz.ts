@@ -19,8 +19,30 @@ export async function getChoicesOfQuiz(quizId: number) {
 
   const { data } = await supabase
     .from('choices')
-    .select(`id, quiz_id, description`)
+    .select(`*`)
     .eq('quiz_id', quizId);
+
+  return data;
+}
+
+export async function upsertQuizSubmission(params: {
+  quizId: number;
+  choiceId: number;
+  success: boolean;
+}) {
+  const { quizId, choiceId, success } = params;
+
+  const supabase: SupabaseClient<Database> = createClient();
+
+  const { data } = await supabase
+    .from('quizsubmissions')
+    .upsert({
+      quiz_id: quizId,
+      choice_id: choiceId,
+      success,
+      updated_at: new Date().toISOString(),
+    })
+    .select();
 
   return data;
 }
