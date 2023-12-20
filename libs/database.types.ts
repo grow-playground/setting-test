@@ -9,6 +9,68 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      answers: {
+        Row: {
+          choice_id: number;
+          description: string;
+          id: number;
+          quiz_id: number;
+        };
+        Insert: {
+          choice_id: number;
+          description: string;
+          id?: number;
+          quiz_id: number;
+        };
+        Update: {
+          choice_id?: number;
+          description?: string;
+          id?: number;
+          quiz_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'answers_choice_id_fkey';
+            columns: ['choice_id'];
+            isOneToOne: false;
+            referencedRelation: 'choices';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'answers_quiz_id_fkey';
+            columns: ['quiz_id'];
+            isOneToOne: true;
+            referencedRelation: 'quizzes';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      choices: {
+        Row: {
+          description: string;
+          id: number;
+          quiz_id: number;
+        };
+        Insert: {
+          description: string;
+          id?: number;
+          quiz_id: number;
+        };
+        Update: {
+          description?: string;
+          id?: number;
+          quiz_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'choices_quiz_id_fkey';
+            columns: ['quiz_id'];
+            isOneToOne: false;
+            referencedRelation: 'quizzes';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       notes: {
         Row: {
           id: number;
@@ -24,7 +86,132 @@ export interface Database {
         };
         Relationships: [];
       };
+      questions: {
+        Row: {
+          created_at: string;
+          description: string;
+          id: number;
+          quiz_id: number;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          description: string;
+          id?: number;
+          quiz_id: number;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string;
+          id?: number;
+          quiz_id?: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'questions_quiz_id_fkey';
+            columns: ['quiz_id'];
+            isOneToOne: false;
+            referencedRelation: 'quizzes';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'questions_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      quizsubmissions: {
+        Row: {
+          created_at: string;
+          id: number;
+          quiz_id: number | null;
+          success: boolean;
+          updated_at: string;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          quiz_id?: number | null;
+          success: boolean;
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          quiz_id?: number | null;
+          success?: boolean;
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'quizsubmissions_quiz_id_fkey';
+            columns: ['quiz_id'];
+            isOneToOne: false;
+            referencedRelation: 'quizzes';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'quizsubmissions_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       quizzes: {
+        Row: {
+          created_at: string;
+          description: string;
+          difficulty: Database['public']['Enums']['difficulty'];
+          id: number;
+          summary: string;
+          title: string;
+          updated_at: string;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          description: string;
+          difficulty: Database['public']['Enums']['difficulty'];
+          id?: number;
+          summary: string;
+          title: string;
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          description?: string;
+          difficulty?: Database['public']['Enums']['difficulty'];
+          id?: number;
+          summary?: string;
+          title?: string;
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'quizzes_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      quizzes_before: {
         Row: {
           answer: number | null;
           answer_description: string | null;
@@ -55,15 +242,7 @@ export interface Database {
           id?: number;
           user_id?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'quizzes_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
+        Relationships: [];
       };
       users: {
         Row: {
@@ -99,7 +278,7 @@ export interface Database {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      difficulty: 'easy' | 'medium' | 'hard';
     };
     CompositeTypes: {
       [_ in never]: never;
