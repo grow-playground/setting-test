@@ -5,7 +5,7 @@ import { forwardRef, type Ref } from 'react';
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof button>;
 
-const button = cva(['rounded border text-white'], {
+const button = cva(['rounded text-white'], {
   variants: {
     intent: {
       primary: ['bg-blue-600', 'hover:bg-blue-700'],
