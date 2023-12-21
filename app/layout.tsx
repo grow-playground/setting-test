@@ -1,7 +1,8 @@
 import { GeistSans } from 'geist/font/sans';
 import './globals.css';
-import QueryProvider from '@/providers/QueryProvider';
+import QueryProvider from '@/providers/query-provider';
 import { PcScreen } from '@/components/pc-screen';
+import OverlayProvider from '@/providers/overlay-provider';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,7 +28,8 @@ export default function RootLayout({
 
           <div id="app-background" />
           <div id="app-screen" className="bg-white">
-            {children}
+            {/* NOTE: OverlayProvider에 div가 감싸져야 한다. */}
+            <OverlayProvider>{children}</OverlayProvider>
           </div>
         </body>
       </QueryProvider>
