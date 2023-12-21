@@ -1,13 +1,10 @@
 'use client';
 
 import Button from '@/components/common/buttons/button';
-import useTempModal from '@/components/common/modals/use-temp-modal';
 import { useGetQuiz } from '@/hooks/quiz';
 
-export function Quiz() {
-  const { data: quiz } = useGetQuiz();
-  const { open } = useTempModal();
-
+export function Quiz({ id }: { id: number }) {
+  const { data: quiz } = useGetQuiz(id);
   const openModal = () => {
     open();
   };
