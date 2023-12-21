@@ -10,7 +10,7 @@ type NavLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> &
   VariantProps<typeof navLink>;
 
 const navLink = cva(
-  ['grow border-b-2 border-b-neutral-300 pb-2 text-center text-neutral-300'],
+  ['border-b-2 border-b-neutral-300 pb-2 text-center text-neutral-300'],
   {
     variants: {
       intent: {

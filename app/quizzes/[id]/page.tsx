@@ -1,4 +1,3 @@
-import NavLink from '@/components/common/link/nav-link';
 import {
   HydrationBoundary,
   QueryClient,
@@ -11,6 +10,7 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
+import QuizLinkTab from '@/components/tab/quiz-link-tab';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
@@ -30,12 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="p-4">
-        <main className="p-4">
-          <article className="flex w-full">
-            <NavLink href={`/quizzes/${params.id}`}>퀴즈</NavLink>
-            <NavLink href={`/quizzes/${params.id}/questions`}>질문</NavLink>
-          </article>
-        </main>
+        <QuizLinkTab className="mb-2" quizId={`${quizId}`} />
         <section className="mb-10">
           <h2 className="text-2xl font-bold">출제자</h2>
           {/* TODO: 추후 상세 유저 페이지 라우팅 경로로 변경하기 */}
