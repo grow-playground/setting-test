@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { QuizCard } from '@/components/quiz/quiz-card';
 import FullButton from '@/components/common/buttons/full-button';
 import Button from '@/components/common/buttons/button';
+import Header from '@/components/header';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -24,10 +25,18 @@ export default async function Page() {
     await supabase.auth.signOut();
   };
 
+  const HeaderRightArea = user ? (
+    <form action={signOut}>
+      <Button className="h-full">로그아웃</Button>
+    </form>
+  ) : (
+    <KakaoButton />
+  );
+
   return (
     <>
-      <header className="sticky top-0 z-50 h-16 border-b-2 border-slate-50 bg-white">
-        <div className="flex justify-between">
+      <Header
+        leftArea={
           <Image
             src={TypeTimeLogo}
             alt="타입타임 로고"
@@ -35,15 +44,9 @@ export default async function Page() {
             height={63}
             priority
           />
-          {user ? (
-            <form action={signOut}>
-              <Button className="h-full">로그아웃</Button>
-            </form>
-          ) : (
-            <KakaoButton />
-          )}
-        </div>
-      </header>
+        }
+        rightArea={HeaderRightArea}
+      />
 
       <main>
         <div className="flex flex-col gap-6">
