@@ -1,22 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetChoicesOfQuiz, postQuizSubmission } from '@/hooks/quiz';
-import { useMutation } from '@tanstack/react-query';
+import { useGetChoicesOfQuiz, useSubmitQuiz } from '@/services/quiz/hooks';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/button';
 import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
 
 export default function ChoiceForm({ quizId }: { quizId: number }) {
-  const { data: choices } = useGetChoicesOfQuiz(quizId);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
-  const { mutate, isPending, isSuccess } = useMutation({
-    mutationFn: postQuizSubmission,
-    onSuccess: () => router.push(`/quizzes/${quizId}/answer`),
-    onError: (error) => setErrorMessage(error.message),
-  });
+  const { data: choices } = useGetChoicesOfQuiz(quizId);
+  const { mutate, isPending, isSuccess } = useSubmitQuiz();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,10 +27,16 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
       return;
     }
 
-    mutate({
-      quizId,
-      choiceId: choice.id,
-    });
+    mutate(
+      {
+        quizId,
+        choiceId: choice.id,
+      },
+      {
+        onSuccess: () => router.push(`/quizzes/${quizId}/answer`),
+        onError: (error) => setErrorMessage(error.message),
+      }
+    );
   };
 
   return (
