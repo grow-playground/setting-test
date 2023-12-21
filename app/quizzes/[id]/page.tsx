@@ -7,6 +7,7 @@ import { getQuiz, getChoicesOfQuiz } from '@/hooks/quiz';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
 
@@ -28,14 +29,18 @@ export default async function Page({ params }: { params: { id: string } }) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="p-4">
         <section className="mb-10">
-          <h2 className="m-0">출제자</h2>
+          <h2 className="text-2xl font-bold">출제자</h2>
           {/* TODO: 추후 상세 유저 페이지 라우팅 경로로 변경하기 */}
-          <Link href={`/users/${quiz?.users?.id}`}>{quiz?.users?.name}</Link>
+          <Link className="underline" href={`/users/${quiz?.users?.id}`}>
+            {quiz?.users?.name}
+          </Link>
         </section>
 
         <section className="mb-10">
-          <h2 className="m-0">문제</h2>
+          <h2 className="text-2xl font-bold">문제</h2>
           <Markdown
+            className="prose"
+            remarkPlugins={[remarkGfm]}
             components={{
               code({ className, children, ...rest }) {
                 const match = /language-(\w+)/.exec(className || '');
