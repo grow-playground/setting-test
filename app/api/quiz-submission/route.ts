@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 export async function POST(request: NextRequest) {
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   );
 
   if (!validateBody.success) {
-    return Response.json(
+    return NextResponse.json(
       { error: '필드가 올바르지 않습니다.' },
       { status: 400 }
     );
@@ -30,7 +30,10 @@ export async function POST(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return Response.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+    return NextResponse.json(
+      { error: '로그인이 필요합니다.' },
+      { status: 401 }
+    );
   }
 
   const { data: answerChoice } = await supabase
@@ -47,11 +50,11 @@ export async function POST(request: NextRequest) {
   });
 
   if (choiceId !== answerChoice?.id) {
-    return Response.json(
+    return NextResponse.json(
       { error: '틀렸어요! 다시 고민해주세요.' },
       { status: 400 }
     );
   }
 
-  return Response.json({ data: '정답!' });
+  return NextResponse.json({ data: '정답!' });
 }
