@@ -1,6 +1,6 @@
+import { cn } from '@/libs/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type Ref } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof button>;
@@ -24,7 +24,7 @@ export default forwardRef(function Button(
   return (
     <button
       ref={forwardedRef}
-      className={twMerge(button({ intent, size, className }))}
+      className={cn(button({ intent, size, className }))}
       {...props}
     >
       {children}

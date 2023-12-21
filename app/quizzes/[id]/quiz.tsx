@@ -10,8 +10,8 @@ export function Quiz({ id }: { id: number }) {
   };
 
   return (
-    <div>
-      {/* <div>나는 클라이언트 컴포넌트에서 불러온 값!</div> */}
+    <div className="w-full break-all">
+      <div>나는 클라이언트 컴포넌트에서 불러온 값!</div>
       {JSON.stringify(quiz)}
       <Button onClick={openModal}>모달 테스트</Button>
     </div>
