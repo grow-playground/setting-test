@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/components/common/buttons/button';
-import { useGetQuiz } from '@/hooks/quiz';
+import { useGetQuiz } from '@/services/quiz/hooks';
 
 export function Quiz({ id }: { id: number }) {
   const { data: quiz } = useGetQuiz(id);
