@@ -36,8 +36,7 @@ export async function POST(request: NextRequest) {
   const { data: answerChoice } = await supabase
     .from('choices')
     .select(`*`)
-    .eq('quiz_id', quizId)
-    .eq('answer', true)
+    .match({ quiz_id: quizId, answer: true })
     .single();
 
   await supabase.from('quizsubmissions').upsert({
