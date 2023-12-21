@@ -7,7 +7,7 @@ export function Quiz() {
 
   console.log(quiz);
   return (
-    <div>
+    <div className="w-full break-all">
       <div>나는 클라이언트 컴포넌트에서 불러온 값!</div>
       {JSON.stringify(quiz)}
     </div>
