@@ -15,15 +15,16 @@ export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   const quizId = Number(params.id) ?? 0;
 
-  const quiz = await queryClient.fetchQuery({
-    queryKey: ['quiz', quizId],
-    queryFn: () => getQuiz(quizId),
-  });
-
-  await queryClient.fetchQuery({
-    queryKey: ['quiz', quizId, 'choices'],
-    queryFn: () => getChoicesOfQuiz(quizId),
-  });
+  const [quiz] = await Promise.all([
+    queryClient.fetchQuery({
+      queryKey: ['quiz', quizId],
+      queryFn: () => getQuiz(quizId),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ['quiz', quizId, 'choices'],
+      queryFn: () => getChoicesOfQuiz(quizId),
+    }),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
