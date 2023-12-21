@@ -1,13 +1,20 @@
 import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 export async function getQuiz(id: number) {
   const supabase: SupabaseClient<Database> = createClient();
 
-  const { data } = await supabase
+  type Response = PostgrestSingleResponse<
+    Database['public']['Tables']['quizzes']['Row'] & {
+      users: Pick<Database['public']['Tables']['users']['Row'], 'id' | 'name'>;
+    }
+  >;
+
+  const { data }: Response = await supabase
     .from('quizzes')
-    .select(`*, users (id, name)`)
+    .select(`*, users:user_id(id, name)`)
     .eq('id', id)
     .limit(1)
     .single();
@@ -20,7 +27,7 @@ export async function getChoicesOfQuiz(quizId: number) {
 
   const { data } = await supabase
     .from('choices')
-    .select(`*`)
+    .select(`id, quiz_id, description`)
     .eq('quiz_id', quizId);
 
   return data;
