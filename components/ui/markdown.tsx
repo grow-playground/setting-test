@@ -5,49 +5,47 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import remarkGfm from 'remark-gfm';
 
-interface MarkDownProps
-  extends Pick<
-    React.ComponentPropsWithoutRef<typeof ReactMarkdown>,
-    'className' | 'children'
-  > {
-  style: {
-    [key: string]: React.CSSProperties;
-  };
+interface MarkdownProps extends React.ComponentProps<typeof SyntaxHighlighter> {
+  className?: string;
 }
 
 export default function MarkDown({
+  children,
   className,
   style = dracula,
-  children,
   ...props
-}: MarkDownProps) {
+}: MarkdownProps) {
   return (
     <ReactMarkdown
       className={cn('prose', className)}
       remarkPlugins={[remarkGfm]}
       components={{
         code({ className, children, ...rest }) {
-          const match = /language-(\w+)/.exec(className || '');
-          return match ? (
+          const language = className?.replace('language-', '');
+
+          return language ? (
             <SyntaxHighlighter
               {...rest}
-              PreTag="div"
-              language={match[1]}
+              customStyle={{ padding: '0', overflow: 'hidden' }}
+              language={language}
               style={style}
               ref={null}
+              {...props}
             >
               {String(children).replace(/\n$/, '')}
             </SyntaxHighlighter>
           ) : (
-            <code {...rest} className={className}>
+            <code
+              {...rest}
+              className={cn('bg-gray-300 p-1 rounded-md', className)}
+            >
               {children}
             </code>
           );
         },
       }}
-      {...props}
     >
-      {children}
+      {String(children)}
     </ReactMarkdown>
   );
 }

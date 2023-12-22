@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold">문제</h2>
-        <MarkDown style={dracula}>{quiz?.description}</MarkDown>
+        <MarkDown style={dracula}>{quiz?.description ?? ''}</MarkDown>
       </section>
 
       <section className="mb-10">
