@@ -21,21 +21,21 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <section className="mb-10">
-        <h2 className="text-2xl font-bold">출제자</h2>
-        {/* TODO: 추후 상세 유저 페이지 라우팅 경로로 변경하기 */}
-        <Link className="underline" href={`/users/${quiz?.users?.id}`}>
-          {quiz?.users?.name}
-        </Link>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">
+            {quiz?.id} {quiz?.title}
+          </h1>
+          <p>
+            By{' '}
+            <Link className="underline" href={`/users/${quiz?.users?.id}`}>
+              {/* TODO: 추후 상세 유저 페이지 라우팅 경로로 변경하기 */}
+              {quiz?.users?.name}
+            </Link>
+          </p>
+        </div>
       </section>
-
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold">문제</h2>
-        <MarkDown style={dracula}>{quiz?.description ?? ''}</MarkDown>
-      </section>
-
-      <section className="mb-10">
-        <ChoiceForm quizId={quizId} />
-      </section>
+      <MarkDown style={dracula}>{quiz?.description ?? ''}</MarkDown>
+      <ChoiceForm quizId={quizId} />
     </HydrationBoundary>
   );
 }
