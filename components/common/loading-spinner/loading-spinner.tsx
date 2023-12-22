@@ -1,6 +1,6 @@
+import { cn } from '@/libs/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type Ref } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 type LoadingSpinnerProps = React.HTMLAttributes<HTMLElement> &
   VariantProps<typeof loadingSpinner>;
@@ -36,7 +36,7 @@ export default forwardRef(function LoadingSpinner(
   return (
     <div
       ref={forwardedRef}
-      className={twMerge(loadingSpinner({ size, weight, className }))}
+      className={cn(loadingSpinner({ size, weight, className }))}
       {...props}
     />
   );
