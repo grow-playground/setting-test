@@ -76,6 +76,14 @@
   }
 }
 
+.markdown {
+  @apply prose;
+}
+
+.markdown * {
+  @apply my-2;
+}
+
 #background {
   @apply fixed h-full w-full bg-slate-50 lg:bg-gradient-to-r lg:from-sky-400 lg:to-indigo-400;
 }

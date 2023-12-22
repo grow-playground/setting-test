@@ -17,7 +17,7 @@ export default function MarkDown({
 }: MarkdownProps) {
   return (
     <ReactMarkdown
-      className={cn('prose', className)}
+      className={cn('markdown', className)}
       remarkPlugins={[remarkGfm]}
       components={{
         code({ className, children, ...rest }) {
