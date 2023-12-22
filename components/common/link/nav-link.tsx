@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type Ref } from 'react';
-import { twMerge } from 'tailwind-merge';
 import { usePathname } from 'next/navigation';
+import { cn } from '@/libs/utils';
 
 type NavLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> &
   VariantProps<typeof navLink>;
@@ -33,7 +33,7 @@ export default forwardRef(function NavLink(
     <Link
       ref={forwardedRef}
       href={href ?? '#'}
-      className={twMerge(
+      className={cn(
         navLink({ intent: isActive ? intent : null, className }),
         isActive ? 'border-b-4 font-bold' : null
       )}
