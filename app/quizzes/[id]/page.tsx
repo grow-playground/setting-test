@@ -3,27 +3,21 @@ import {
   QueryClient,
   dehydrate,
 } from '@tanstack/react-query';
-import { getQuiz, getChoicesOfQuiz } from '@/hooks/quiz';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
+import quizOptions from '@/services/quiz/options';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   const quizId = Number(params.id) ?? 0;
 
   const [quiz] = await Promise.all([
-    queryClient.fetchQuery({
-      queryKey: ['quiz', quizId],
-      queryFn: () => getQuiz(quizId),
-    }),
-    queryClient.fetchQuery({
-      queryKey: ['quiz', quizId, 'choices'],
-      queryFn: () => getChoicesOfQuiz(quizId),
-    }),
+    queryClient.fetchQuery(quizOptions.detail(quizId)),
+    queryClient.fetchQuery(quizOptions.choices(quizId)),
   ]);
 
   return (
