@@ -11,7 +11,7 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
   const router = useRouter();
 
   const { data: choices } = useGetChoicesOfQuiz(quizId);
-  const { mutate, isPending, isSuccess } = useSubmitQuiz();
+  const { mutate: submitQuiz, isPending, isSuccess } = useSubmitQuiz();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
       return;
     }
 
-    mutate(
+    submitQuiz(
       {
         quizId,
         choiceId: choice.id,
