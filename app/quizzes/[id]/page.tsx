@@ -3,10 +3,8 @@ import {
   QueryClient,
   dehydrate,
 } from '@tanstack/react-query';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import MarkDown from '@/components/ui/markdown';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
 import quizOptions from '@/services/quiz/options';
@@ -32,32 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold">문제</h2>
-        <Markdown
-          className="prose"
-          remarkPlugins={[remarkGfm]}
-          components={{
-            code({ className, children, ...rest }) {
-              const match = /language-(\w+)/.exec(className || '');
-              return match ? (
-                <SyntaxHighlighter
-                  {...rest}
-                  PreTag="div"
-                  language={match[1]}
-                  style={dracula}
-                  ref={null}
-                >
-                  {String(children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
-              ) : (
-                <code {...rest} className={className}>
-                  {children}
-                </code>
-              );
-            },
-          }}
-        >
-          {quiz?.description}
-        </Markdown>
+        <MarkDown style={dracula}>{quiz?.description}</MarkDown>
       </section>
 
       <section className="mb-10">
