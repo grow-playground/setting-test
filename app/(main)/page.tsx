@@ -5,12 +5,21 @@ import TypeTimeLogo from '@/assets/images/type-time-logo.png';
 import Image from 'next/image';
 import Button from '@/components/common/buttons/button';
 import Header from '@/components/header';
-import DataTable from '@/components/quiz/table/data-table';
-import { columns } from '@/components/quiz/table/columns';
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from '@tanstack/react-query';
+import quizOptions from '@/services/quiz/options';
+import QuizTable from './quiz-table';
 
 export default async function Page() {
+  const queryClient = new QueryClient();
+
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
+
+  await queryClient.prefetchQuery(quizOptions.all());
 
   const {
     data: { user },
@@ -33,45 +42,8 @@ export default async function Page() {
     <KakaoButton />
   );
 
-  const dummy = [
-    {
-      id: '1',
-      content: {
-        title: 'asdaalsdasldkasldkasqwdklq kdlqwdklqwt',
-        summary: 'asdaalsdasldkasldkasqwdklq kdlqwdklqw',
-      },
-      difficulty: '중',
-      created_at: '',
-      updated_at: '',
-      success: false,
-    },
-    {
-      id: '2',
-      content: {
-        title: '2 Get Return Type',
-        summary: '함수의 반환 타입을 만들어주세요',
-        ddd: '123123123123123',
-      },
-      difficulty: '하',
-      created_at: '',
-      updated_at: '',
-      tt: '11111',
-    },
-    {
-      id: '2',
-      content: {
-        title: '2 Get Return Type',
-        summary: '함수의 반환 타입을 만들어주세요',
-      },
-      difficulty: '상',
-      created_at: '',
-      updated_at: '',
-      success: true,
-    },
-  ];
-
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <Header
         leftArea={
           <Image
@@ -85,17 +57,14 @@ export default async function Page() {
         rightArea={HeaderRightArea}
       />
 
-      <main>
-        <div>
-          <DataTable columns={columns} data={dummy} />
-        </div>
-      </main>
+      <QuizTable />
+      {/* <DataTable columns={columns} data={dummy} /> */}
 
       <div className="h-16">
         <div className="fixed bottom-0 h-16 w-[28rem] bg-white">
           혹시 몰라서 추가해 본 바텀시트...
         </div>
       </div>
-    </>
+    </HydrationBoundary>
   );
 }

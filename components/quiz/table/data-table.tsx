@@ -49,7 +49,7 @@ export default function DataTable<TData, TValue>({
         className="mb-2.5 w-full border"
         placeholder="퀴즈를 검색해 보세요!"
         onChange={(e) => {
-          table.getColumn('content')?.setFilterValue(e.target.value);
+          table.getColumn('title')?.setFilterValue(e.target.value);
         }}
       />
 

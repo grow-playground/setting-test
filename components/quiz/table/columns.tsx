@@ -15,8 +15,9 @@ import React from 'react';
  */
 
 export type Quiz = {
-  id: string;
-  content: { title: string; summary: string };
+  id: number;
+  title: string;
+  summary: string;
   difficulty: string;
   created_at: string;
   updated_at: string;
@@ -29,21 +30,15 @@ export const columns: ColumnDef<Quiz>[] = [
     header: () => <div className="text-left">상태</div>,
   },
   {
-    accessorKey: 'content',
+    accessorKey: 'title',
     header: '제목',
     cell: ({ row }) => {
-      const { title, summary } = row.getValue<{
-        title: string;
-        summary: string;
-      }>('content');
+      const { title, summary, id } = row.original;
 
       return (
         <div className="max-w-[13rem]">
           <h3 className="truncate">
-            <Link
-              className="text-base font-semibold"
-              href={`/quizzes/${row.id}`}
-            >
+            <Link className="text-base font-semibold" href={`/quizzes/${id}`}>
               {title}
             </Link>
           </h3>
@@ -59,10 +54,7 @@ export const columns: ColumnDef<Quiz>[] = [
       const search = filterValue.toLowerCase();
 
       return Boolean(
-        row
-          .getValue<{ title: string; summary: string } | null>(columnId)
-          ?.title.toLowerCase()
-          .includes(search)
+        row.getValue<string | null>(columnId)?.toLowerCase().includes(search)
       );
     },
   },

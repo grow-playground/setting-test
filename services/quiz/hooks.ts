@@ -2,6 +2,10 @@ import { useSuspenseQuery, useMutation } from '@tanstack/react-query';
 import quizOptions from './options';
 import quizAPI from './api';
 
+export function useGetQuizzes() {
+  return useSuspenseQuery(quizOptions.all());
+}
+
 export function useGetQuiz(quizId: number) {
   return useSuspenseQuery(quizOptions.detail(quizId));
 }

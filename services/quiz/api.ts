@@ -2,6 +2,18 @@ import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 const quizAPI = {
+  getQuizzes: async () => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase.from('quizzes').select(`*`);
+
+    if (!data) {
+      throw new Error('잘못된 접근');
+    }
+
+    return data;
+  },
+
   getQuiz: async (id: number) => {
     const supabase: SupabaseClient<Database> = createClient();
 
@@ -31,10 +43,7 @@ const quizAPI = {
 
     const res = await fetch('/api/quiz-submission', {
       method: 'POST',
-      body: JSON.stringify({
-        quizId,
-        choiceId,
-      }),
+      body: JSON.stringify({ quizId, choiceId }),
     });
 
     const json = await res.json();
