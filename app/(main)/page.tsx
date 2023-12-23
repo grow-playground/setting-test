@@ -38,7 +38,7 @@ export default async function Page() {
     {
       id: '1',
       content: {
-        title: 'asdaalsdasldkasldkasqwdklq kdlqwdklqw',
+        title: 'asdaalsdasldkasldkasqwdklq kdlqwdklqwt',
         summary: 'asdaalsdasldkasldkasqwdklq kdlqwdklqw',
       },
       difficulty: '중',
@@ -51,10 +51,12 @@ export default async function Page() {
       content: {
         title: '2 Get Return Type',
         summary: '함수의 반환 타입을 만들어주세요',
+        ddd: '123123123123123',
       },
       difficulty: '하',
       created_at: '',
       updated_at: '',
+      tt: '11111',
     },
     {
       id: '2',

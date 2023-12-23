@@ -51,6 +51,20 @@ export const columns: ColumnDef<Quiz>[] = [
         </div>
       );
     },
+    /**
+     * @description 참고 코드
+     * https://github.com/TanStack/table/blob/a334f66a82a9b3b0b4e99e7a0cc99ba077aaf167/packages/table-core/src/filterFns.ts#L3-L16
+     */
+    filterFn: (row, columnId, filterValue) => {
+      const search = filterValue.toLowerCase();
+
+      return Boolean(
+        row
+          .getValue<{ title: string; summary: string } | null>(columnId)
+          ?.title.toLowerCase()
+          .includes(search)
+      );
+    },
   },
   {
     accessorKey: 'difficulty',
@@ -75,7 +89,6 @@ function Filter({ column }: { column: Column<Quiz> }) {
   const onClickToggle =
     (difficulty: '하' | '중' | '상') =>
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      console.log(e.currentTarget);
       if (e.currentTarget.dataset.state === 'checked') {
         column.setFilterValue((olds: string[]) =>
           olds.filter((old) => old !== difficulty)
