@@ -38,6 +38,7 @@ export default function MarkDown({
             <code
               {...rest}
               className={cn('bg-gray-300 p-1 rounded-md', className)}
+              style={{ color: '#FF5262' }}
             >
               {children}
             </code>
