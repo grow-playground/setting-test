@@ -5,6 +5,7 @@ import { useGetChoicesOfQuiz, useSubmitQuiz } from '@/services/quiz/hooks';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/button';
 import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
+import MarkDown from '@/components/ui/markdown';
 
 export default function ChoiceForm({ quizId }: { quizId: number }) {
   const [errorMessage, setErrorMessage] = useState('');
@@ -41,17 +42,22 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {choices?.map((choice) => (
-        <label className="flex gap-2" key={choice.id} htmlFor={`${choice.id}`}>
-          <input
-            id={`${choice.id}`}
-            value={`${choice.id}`}
-            type="radio"
-            name="choice"
-            onChange={() => setErrorMessage('')}
-          />
-          <p className="my-1.5">{choice.description}</p>
-        </label>
+      {choices?.map((choice, idx) => (
+        <div className="flex flex-col gap-4" key={choice.id}>
+          <label className="mt-4 flex gap-2" htmlFor={`${choice.id}`}>
+            <input
+              id={`${choice.id}`}
+              value={`${choice.id}`}
+              type="radio"
+              name="choice"
+              onChange={() => setErrorMessage('')}
+            />
+            <h2 className="grow font-bold">{idx + 1}번 선택지</h2>
+          </label>
+          <MarkDown wrapLine={true} wrapLongLines={true}>
+            {choice.description}
+          </MarkDown>
+        </div>
       ))}
       {errorMessage && <p className="my-2 text-red-500">{errorMessage}</p>}
       <Button
