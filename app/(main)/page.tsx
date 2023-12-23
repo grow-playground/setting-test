@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import KakaoButton from '../auth/callback/kakao-button';
 import TypeTimeLogo from '@/assets/images/type-time-logo.png';
 import Image from 'next/image';
-import FullButton from '@/components/common/buttons/full-button';
 import Button from '@/components/common/buttons/button';
 import Header from '@/components/header';
 import DataTable from '@/components/quiz/table/data-table';
@@ -90,8 +89,6 @@ export default async function Page() {
         <div>
           <DataTable columns={columns} data={dummy} />
         </div>
-
-        <FullButton>제출하기(너비 100%)</FullButton>
       </main>
 
       <div className="h-16">

@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/common/buttons/button';
 import {
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
@@ -33,9 +35,11 @@ export default function DataTable<TData, TValue>({
     data,
     columns,
     state: { columnFilters },
+    initialState: { pagination: { pageSize: 1 } },
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -90,7 +94,20 @@ export default function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <pre>{JSON.stringify(table.getState(), null, 2)}</pre>
+      <div>
+        <Button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Prev
+        </Button>
+        <Button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }
