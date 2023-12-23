@@ -3,10 +3,11 @@ import { cookies } from 'next/headers';
 import KakaoButton from '../auth/callback/kakao-button';
 import TypeTimeLogo from '@/assets/images/type-time-logo.png';
 import Image from 'next/image';
-import { QuizCard } from '@/components/quiz/quiz-card';
 import FullButton from '@/components/common/buttons/full-button';
 import Button from '@/components/common/buttons/button';
 import Header from '@/components/header';
+import DataTable from '@/components/quiz/table/data-table';
+import { columns } from '@/components/quiz/table/columns';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -33,6 +34,41 @@ export default async function Page() {
     <KakaoButton />
   );
 
+  const dummy = [
+    {
+      id: '1',
+      content: {
+        title: 'asdaalsdasldkasldkasqwdklq kdlqwdklqw',
+        summary: 'asdaalsdasldkasldkasqwdklq kdlqwdklqw',
+      },
+      difficulty: '중',
+      created_at: '',
+      updated_at: '',
+      success: false,
+    },
+    {
+      id: '2',
+      content: {
+        title: '2 Get Return Type',
+        summary: '함수의 반환 타입을 만들어주세요',
+      },
+      difficulty: '하',
+      created_at: '',
+      updated_at: '',
+    },
+    {
+      id: '2',
+      content: {
+        title: '2 Get Return Type',
+        summary: '함수의 반환 타입을 만들어주세요',
+      },
+      difficulty: '상',
+      created_at: '',
+      updated_at: '',
+      success: true,
+    },
+  ];
+
   return (
     <>
       <Header
@@ -49,68 +85,8 @@ export default async function Page() {
       />
 
       <main>
-        <div className="flex flex-col gap-6">
-          <QuizCard
-            status="correct"
-            difficulty="easy"
-            title="2 Get Return Type"
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            status="wrong"
-            difficulty="hard"
-            title="2 Get Return Type"
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            difficulty="medium"
-            title="2 Get Return Type"
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            difficulty="medium"
-            title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-          illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-          eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-          aspernatur laudantium."
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            difficulty="medium"
-            title="2 Get Return Type"
-            summary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-            illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-            eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-            aspernatur laudantium."
-          />
-          <QuizCard
-            difficulty="medium"
-            title="2 Get Return Type"
-            summary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-            illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-            eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-            aspernatur laudantium."
-          />
-          <QuizCard
-            difficulty="medium"
-            title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-          illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-          eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-          aspernatur laudantium."
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            status="wrong"
-            difficulty="medium"
-            title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-          illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-          eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-          aspernatur laudantium."
-            summary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-            illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-            eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-            aspernatur laudantium."
-          />
+        <div>
+          <DataTable columns={columns} data={dummy} />
         </div>
 
         <FullButton>제출하기(너비 100%)</FullButton>
