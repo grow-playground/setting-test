@@ -7,9 +7,5 @@ import { useGetQuizzes } from '@/services/quiz/hooks';
 export default function QuizTable() {
   const { data: quizzes } = useGetQuizzes();
 
-  return (
-    <div>
-      <DataTable columns={columns} data={quizzes} />
-    </div>
-  );
+  return <div>{quizzes && <DataTable columns={columns} data={quizzes} />}</div>;
 }

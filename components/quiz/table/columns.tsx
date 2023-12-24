@@ -6,28 +6,19 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import type { Quiz, QuizTable } from '@/libs/models';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
-import React from 'react';
 
-/**
- *@todo zod 사용 예정
- */
-
-export type Quiz = {
-  id: number;
-  title: string;
-  summary: string;
-  difficulty: string;
-  created_at: string;
-  updated_at: string;
-  success?: boolean;
-};
-
-export const columns: ColumnDef<Quiz>[] = [
+export const columns: ColumnDef<QuizTable>[] = [
   {
     accessorKey: 'success',
     header: () => <div className="text-left">상태</div>,
+    cell: ({ row }) => {
+      const { success } = row.original;
+
+      return <div>{JSON.stringify(success)}</div>;
+    },
   },
   {
     accessorKey: 'title',

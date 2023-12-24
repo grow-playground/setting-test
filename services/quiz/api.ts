@@ -1,3 +1,4 @@
+import { QuizTableSchema } from '@/libs/models';
 import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -5,13 +6,30 @@ const quizAPI = {
   getQuizzes: async () => {
     const supabase: SupabaseClient<Database> = createClient();
 
-    const { data } = await supabase.from('quizzes').select(`*`);
+    const { data: quizzes } = await supabase.from('quizzes').select('*');
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    const { data: userquizSubmissions } = await supabase
+      .from('quizsubmissions')
+      .select('*')
+      .eq('user_id', session?.user.id ?? '');
 
-    if (!data) {
+    if (!quizzes) {
       throw new Error('잘못된 접근');
     }
 
-    return data;
+    const quizzesTable = await QuizTableSchema.transform((quiz) => {
+      const success = userquizSubmissions?.find(
+        (submission) => submission.quiz_id === quiz.id
+      )?.success;
+
+      return { ...quiz, success };
+    })
+      .array()
+      .parseAsync(quizzes);
+
+    return quizzesTable;
   },
 
   getQuiz: async (id: number) => {
