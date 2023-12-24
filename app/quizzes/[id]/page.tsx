@@ -20,8 +20,9 @@ export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   const quizId = Number(params.id) ?? 0;
 
-  const [quiz] = await Promise.all([
+  const [quiz, hints] = await Promise.all([
     queryClient.fetchQuery(quizOptions.detail(quizId)),
+    queryClient.fetchQuery(quizOptions.hints(quizId)),
     queryClient.fetchQuery(quizOptions.choices(quizId)),
   ]);
 
@@ -47,9 +48,11 @@ export default async function Page({ params }: { params: { id: string } }) {
           <AccordionItem value="item-1">
             <AccordionTrigger>힌트 보기</AccordionTrigger>
             <AccordionContent className="flex flex-wrap gap-1">
-              <Badge variant="secondary">Badge</Badge>
-              <Badge variant="secondary">Badge</Badge>
-              <Badge variant="secondary">Badge</Badge>
+              {hints?.map((hint) => (
+                <Badge key={hint.id} variant="secondary">
+                  {hint.description}
+                </Badge>
+              ))}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
