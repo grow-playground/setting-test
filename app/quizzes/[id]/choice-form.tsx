@@ -7,7 +7,12 @@ import Button from '@/components/common/buttons/button';
 import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
 import MarkDown from '@/components/ui/markdown';
 
-export default function ChoiceForm({ quizId }: { quizId: number }) {
+interface ChoiceFormProps {
+  quizId: number;
+  children?: React.ReactNode;
+}
+
+export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
@@ -60,6 +65,7 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
         </div>
       ))}
       {errorMessage && <p className="my-2 text-red-500">{errorMessage}</p>}
+      {children}
       <Button
         className="mt-4 flex h-10 w-full items-center justify-center disabled:bg-blue-500"
         disabled={isPending || isSuccess}

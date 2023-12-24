@@ -8,6 +8,13 @@ import MarkDown from '@/components/ui/markdown';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
 import quizOptions from '@/services/quiz/options';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
@@ -35,7 +42,18 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </section>
       <MarkDown style={dracula}>{quiz?.description ?? ''}</MarkDown>
-      <ChoiceForm quizId={quizId} />
+      <ChoiceForm quizId={quizId}>
+        <Accordion type="multiple">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>힌트 보기</AccordionTrigger>
+            <AccordionContent className="flex flex-wrap gap-1">
+              <Badge variant="secondary">Badge</Badge>
+              <Badge variant="secondary">Badge</Badge>
+              <Badge variant="secondary">Badge</Badge>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </ChoiceForm>
     </HydrationBoundary>
   );
 }
