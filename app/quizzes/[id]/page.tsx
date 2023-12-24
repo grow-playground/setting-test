@@ -4,7 +4,7 @@ import {
   dehydrate,
 } from '@tanstack/react-query';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import MarkDown from '@/components/ui/markdown';
+import MarkDown from '@/components/common/markdown/markdown';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
 import quizOptions from '@/services/quiz/options';
