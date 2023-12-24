@@ -6,9 +6,9 @@ export const QuizSchema = z.object({
   summary: z.string(),
   description: z.string(),
   difficulty: z.union([
-    z.literal('easy'),
-    z.literal('medium'),
-    z.literal('hard'),
+    z.literal('easy').transform(() => '하'),
+    z.literal('medium').transform(() => '중'),
+    z.literal('hard').transform(() => '상'),
   ]),
   created_at: z.string(),
   updated_at: z.string(),
