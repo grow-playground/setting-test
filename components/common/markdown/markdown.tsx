@@ -9,7 +9,7 @@ interface MarkdownProps extends React.ComponentProps<typeof SyntaxHighlighter> {
   className?: string;
 }
 
-export default function MarkDown({
+export default function Markdown({
   children,
   className,
   style = dracula,
