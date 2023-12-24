@@ -10,7 +10,7 @@ export default function MarkdownEditor({
 }: {
   children?: React.ReactNode;
 }) {
-  const [value, setValue] = useState('**Hello world!!!**');
+  const [value, setValue] = useState('');
   const [isPreview, setIsPreview] = useState(false);
 
   const contextValue = { value, setValue, isPreview, setIsPreview };
@@ -31,8 +31,9 @@ MarkdownEditor.Content = function Content() {
         <Markdown>{value}</Markdown>
       ) : (
         <MDEditor
+          id="hello"
           value={value}
-          onChange={(value) => value && setValue(value)}
+          onChange={(value) => setValue(value ?? '')}
           hideToolbar
           height="auto"
           preview="edit"
