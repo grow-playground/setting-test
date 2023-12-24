@@ -58,7 +58,6 @@ export default async function Page() {
       />
 
       <QuizTable />
-      {/* <DataTable columns={columns} data={dummy} /> */}
 
       <div className="h-16">
         <div className="fixed bottom-0 h-16 w-[28rem] bg-white">
