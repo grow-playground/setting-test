@@ -44,18 +44,20 @@ export default async function Page({ params }: { params: { id: string } }) {
       </section>
       <MarkDown style={dracula}>{quiz?.description ?? ''}</MarkDown>
       <ChoiceForm quizId={quizId}>
-        <Accordion type="multiple">
-          <AccordionItem value="item-1">
-            <AccordionTrigger>힌트 보기</AccordionTrigger>
-            <AccordionContent className="flex flex-wrap gap-1">
-              {hints?.map((hint) => (
-                <Badge key={hint.id} variant="secondary">
-                  {hint.description}
-                </Badge>
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        {hints && hints?.length > 0 ? (
+          <Accordion type="multiple">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>힌트 보기</AccordionTrigger>
+              <AccordionContent className="flex flex-wrap gap-1">
+                {hints?.map((hint) => (
+                  <Badge key={hint.id} variant="secondary">
+                    {hint.description}
+                  </Badge>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ) : null}
       </ChoiceForm>
     </HydrationBoundary>
   );

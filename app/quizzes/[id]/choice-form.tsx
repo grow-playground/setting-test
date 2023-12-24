@@ -59,9 +59,7 @@ export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
             />
             <h2 className="grow font-bold">{idx + 1}번 선택지</h2>
           </label>
-          <MarkDown wrapLine={true} wrapLongLines={true}>
-            {choice.description}
-          </MarkDown>
+          <MarkDown wrapLongLines={true}>{choice.description}</MarkDown>
         </div>
       ))}
       {errorMessage && <p className="my-2 text-red-500">{errorMessage}</p>}
