@@ -5,39 +5,15 @@ import MarkdownEditorContext from './markdown-editor-context';
 import MDEditor from '@uiw/react-md-editor';
 import Markdown from './markdown';
 
-// export default function MarkdownEditor() {
-//   const [value, setValue] = useState('**Hello world!!!**');
-//   const [previewMode, setPreviewMode] = useState(false);
-
-//   return (
-//     <>
-//       <Button onClick={() => setPreviewMode(!previewMode)}>
-//         {previewMode ? '편집하기' : '미리보기'}
-//       </Button>
-//       {previewMode ? (
-//         <Markdown>{value}</Markdown>
-//       ) : (
-//         <MDEditor
-//           value={value}
-//           onChange={(value) => setValue(value ?? '')}
-//           hideToolbar
-//           height="auto"
-//           preview="edit"
-//         />
-//       )}
-//     </>
-//   );
-// }
-
 export default function MarkdownEditor({
   children,
 }: {
   children?: React.ReactNode;
 }) {
   const [value, setValue] = useState('**Hello world!!!**');
-  const [previewMode, setPreviewMode] = useState(false);
+  const [isPreview, setIsPreview] = useState(false);
 
-  const contextValue = { value, setValue, previewMode, setPreviewMode };
+  const contextValue = { value, setValue, isPreview, setIsPreview };
 
   return (
     <MarkdownEditorContext.Provider value={contextValue}>
@@ -47,11 +23,11 @@ export default function MarkdownEditor({
 }
 
 MarkdownEditor.Content = function Content() {
-  const { value, setValue, previewMode } = useContext(MarkdownEditorContext);
+  const { value, setValue, isPreview } = useContext(MarkdownEditorContext);
 
   return (
     <>
-      {previewMode ? (
+      {isPreview ? (
         <Markdown>{value}</Markdown>
       ) : (
         <MDEditor
@@ -66,24 +42,24 @@ MarkdownEditor.Content = function Content() {
   );
 };
 
-MarkdownEditor.Toggler = function Toggler({
+MarkdownEditor.PreviewToggler = function PreviewToggler({
   children,
 }: {
   children?:
     | React.ReactNode
     | ((props: {
-        previewMode: boolean;
+        isPreview: boolean;
         toggle: VoidFunction;
       }) => React.ReactNode);
 }) {
-  const { previewMode, setPreviewMode } = useContext(MarkdownEditorContext);
+  const { isPreview, setIsPreview } = useContext(MarkdownEditorContext);
 
-  const toggle = () => setPreviewMode(!previewMode);
+  const toggle = () => setIsPreview(!isPreview);
 
   return (
     <>
       {typeof children === 'function'
-        ? children({ previewMode, toggle })
+        ? children({ isPreview, toggle })
         : children}
     </>
   );
