@@ -29,11 +29,10 @@ const quizAPI = {
   getHintsOfQuiz: async (quizId: number) => {
     const supabase: SupabaseClient<Database> = createClient();
 
-    const res = await supabase.from('hints').select('*').eq('quiz_id', quizId);
-
-    console.log(res);
-
-    const { data } = res;
+    const { data } = await supabase
+      .from('hints')
+      .select('*')
+      .eq('quiz_id', quizId);
 
     return data;
   },
