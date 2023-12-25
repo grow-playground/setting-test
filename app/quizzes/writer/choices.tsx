@@ -1,25 +1,50 @@
 'use client';
 
-// import { useRef } from 'react';
-// import { useForm, useFieldArray } from 'react-hook-form';
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
-// import { Badge } from '@/components/ui/badge';
-// import { Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
-// import { Inputs } from './writer-form';
+import { useForm } from 'react-hook-form';
+import { Label } from '@/components/ui/label';
+import { Inputs } from './writer-form';
+import {
+  Accordion,
+  AccordionTrigger,
+  AccordionItem,
+  AccordionContent,
+} from '@/components/ui/accordion';
+import MDEditor from '@uiw/react-md-editor';
+import React from 'react';
+import Markdown from '@/components/common/markdown/markdown';
 
-// interface ChoicesProps {
-//   form: ReturnType<typeof useForm<Inputs>>;
-// }
+interface ChoicesProps {
+  form: ReturnType<typeof useForm<Inputs>>;
+}
 
-// export default function Choices({ form }: ChoicesProps) {
-//   const { control } = form;
+export default function Choices({ form }: ChoicesProps) {
+  const { watch, setValue } = form;
 
-//   const {
-//     append,
-//     fields: choices,
-//     remove,
-//   } = useFieldArray({ control, name: 'choices' });
-
-//   return <div></div>;
-// }
+  return (
+    <>
+      <Label className="grow text-lg font-bold">선택지</Label>
+      {Array.from({ length: 4 }).map((_, index) => (
+        <Accordion type="multiple" key={index}>
+          <AccordionItem value={`item-${index + 1}`}>
+            <AccordionTrigger>{index + 1}번</AccordionTrigger>
+            <AccordionContent className="p-2">
+              <MDEditor
+                placeholder="선택지를 입력해주세요"
+                value={watch(`choices.${index}.value`)}
+                onChange={(value) =>
+                  setValue(`choices.${index}.value`, value ?? '')
+                }
+                hideToolbar
+                height={110}
+                preview="edit"
+              />
+              <Markdown className="min-h-[2rem]">
+                {watch(`choices.${index}.value`) ?? ''}
+              </Markdown>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      ))}
+    </>
+  );
+}

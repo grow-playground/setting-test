@@ -47,6 +47,7 @@ export default function Hints({ form }: HintsProps) {
           {...register('hintInput')}
           id="hint"
           autoComplete="off"
+          placeholder="힌트를 입력해주세요"
           onKeyDown={(e) => e.key === 'Enter' && addHint()}
         />
         <Button
