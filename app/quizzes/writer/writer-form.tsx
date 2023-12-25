@@ -1,6 +1,6 @@
 'use client';
 
-import { useReducer, useRef } from 'react';
+import { useRef } from 'react';
 import Button from '@/components/common/buttons/button';
 import { Button as ShadcnButton } from '@/components/ui/button';
 import MarkdownEditor from '@/components/common/markdown/markdown-editor';
@@ -9,28 +9,48 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
 import {
-  initialState,
-  reducer,
-  useWriterForm,
-  WriterFormContext,
-} from './writer-form-reducer';
+  type SubmitHandler,
+  useForm,
+  FormProvider,
+  useFormContext,
+  useFieldArray,
+} from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 // 제어 컴포넌트여야되는 거
 // 1. 힌트 (가변 갯수)
-// 2. 문제 내용 (최대 텍스트 길이때문에)
-// 3. 선택지 (최대 텍스트 길이 + 가변 갯수)
-// 4. 정답 내용 (최대 텍스트 길이때문에)
+// 2. 선택지 (최대 텍스트 길이 + 가변 갯수)
+
+const formSchema = z.object({
+  title: z.string().min(1).max(100),
+  summary: z.string().min(1).max(100),
+  difficulty: z.enum(['easy', 'medium', 'hard']),
+  hints: z.array(
+    z.object({
+      value: z.string().min(1).max(100),
+    })
+  ),
+  description: z.string().min(1).max(100),
+  answer: z.string().min(1).max(100),
+});
+
+type Inputs = z.infer<typeof formSchema>;
 
 export default function WriterForm() {
-  const [form, dispatch] = useReducer(reducer, initialState);
+  const form = useForm<Inputs>({
+    resolver: zodResolver(formSchema),
+  });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const { register, handleSubmit } = form;
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
   };
 
   return (
-    <WriterFormContext.Provider value={{ form, dispatch }}>
-      <form onSubmit={onSubmit}>
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className="mb-4">
           <Label className="text-lg font-bold" htmlFor="title">
             제목
@@ -38,27 +58,14 @@ export default function WriterForm() {
           <Input
             id="title"
             placeholder="제목을 입력해주세요"
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_TITLE',
-                payload: e.target.value,
-              })
-            }
+            {...register('title')}
           />
         </section>
         <section className="mb-4">
           <Label className="text-lg font-bold" htmlFor="summary">
             한 줄 소개
           </Label>
-          <Input
-            id="summary"
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_SUMMARY',
-                payload: e.target.value,
-              })
-            }
-          />
+          <Input id="summary" {...register('summary')} />
         </section>
         <section className="mb-4">
           <Label className="text-lg font-bold" htmlFor="???">
@@ -72,6 +79,7 @@ export default function WriterForm() {
           </Label>
           <HintSection />
         </section>
+
         <section className="mb-4">
           <MarkdownEditor>
             <div className="mb-4 flex items-center justify-between">
@@ -125,37 +133,38 @@ export default function WriterForm() {
           작성 완료
         </Button>
       </form>
-    </WriterFormContext.Provider>
+    </FormProvider>
   );
 }
 
 function HintSection() {
-  const { form, dispatch } = useWriterForm();
-  const hintRef = useRef<HTMLInputElement>(null);
+  const { control } = useFormContext<Inputs>();
+
+  const {
+    append,
+    fields: hints,
+    remove,
+  } = useFieldArray({ control, name: 'hints' });
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const addHint = () => {
-    if (!hintRef.current || !hintRef.current.value) {
+    if (!inputRef.current || !inputRef.current.value) {
       return;
     }
 
-    const hint = hintRef.current.value;
-    hintRef.current.value = '';
+    const value = inputRef.current.value;
+    inputRef.current.value = '';
 
-    if (form.hints.includes(hint)) {
+    if (hints.some((hint) => hint.value === value)) {
       return;
     }
 
-    dispatch({
-      type: 'ADD_HINT',
-      payload: hint,
-    });
+    append({ value });
   };
 
-  const removeHint = (hint: string) => {
-    dispatch({
-      type: 'REMOVE_HINT',
-      payload: hint,
-    });
+  const removeHint = (id: string) => {
+    remove(hints.findIndex((hint) => hint.id === id));
   };
 
   return (
@@ -164,7 +173,7 @@ function HintSection() {
         <Input
           id="hint"
           autoComplete="off"
-          ref={hintRef}
+          ref={inputRef}
           onKeyDown={(e) => e.key === 'Enter' && addHint()}
         />
         <ShadcnButton
@@ -177,18 +186,18 @@ function HintSection() {
         </ShadcnButton>
       </div>
       <div className="mt-2 flex gap-2">
-        {form.hints.map((hint, idx) => (
+        {hints.map((hint, idx) => (
           <Badge
             key={idx}
             className="flex items-center gap-1"
             variant="secondary"
           >
-            {hint}
+            {hint.value}
             <Cross1Icon
               className="cursor-pointer"
               width={10}
               height={10}
-              onClick={() => removeHint(hint)}
+              onClick={() => removeHint(hint.id)}
             />
           </Badge>
         ))}
