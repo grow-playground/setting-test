@@ -90,14 +90,27 @@ export default function WriterForm() {
           onChange={(value) => setValue('description', value ?? '')}
         />
       </section>
-      <section className="mb-4 flex flex-col gap-4">
+      <section className="mb-4">
         <Choices form={form} />
       </section>
-      <section className="mb-4 flex flex-col gap-4">
+      <section className="mb-4">
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="hint">
           정답
         </Label>
-        <div>뭔가 체크박스... 1~4번까지</div>
+        <div className="flex justify-around">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index}>
+              <input
+                className="me-2"
+                type="radio"
+                id={`${index}`}
+                name="answer"
+                value={`${index}`}
+              />
+              <label htmlFor={`${index}`}>{index + 1}번</label>
+            </div>
+          ))}
+        </div>
       </section>
       <section className="mb-4 flex flex-col gap-4">
         <MarkdownEditor
