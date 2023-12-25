@@ -42,7 +42,7 @@ export default function WriterForm() {
     resolver: zodResolver(formSchema),
   });
 
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, watch, setValue } = form;
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
@@ -79,55 +79,22 @@ export default function WriterForm() {
           </Label>
           <HintSection />
         </section>
-
-        <section className="mb-4">
-          <MarkdownEditor>
-            <div className="mb-4 flex items-center justify-between">
-              <Label htmlFor="hello" className="grow text-lg font-bold">
-                문제 내용
-              </Label>
-              <MarkdownEditor.PreviewToggler>
-                {({ isPreview, toggle }) => (
-                  <Button type="button" size="small" onClick={toggle}>
-                    {isPreview ? '편집하기' : '미리보기'}
-                  </Button>
-                )}
-              </MarkdownEditor.PreviewToggler>
-            </div>
-            <MarkdownEditor.Content />
-          </MarkdownEditor>
+        <section className="mb-4 flex flex-col gap-4">
+          <MarkdownEditor
+            label="문제 내용"
+            value={watch('description')}
+            onChange={(value) => setValue('description', value ?? '')}
+          />
         </section>
-
-        <section className="mb-4">
-          <MarkdownEditor>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="grow text-lg font-bold">선택지</h2>
-              <MarkdownEditor.PreviewToggler>
-                {({ isPreview, toggle }) => (
-                  <Button type="button" size="small" onClick={toggle}>
-                    {isPreview ? '편집하기' : '미리보기'}
-                  </Button>
-                )}
-              </MarkdownEditor.PreviewToggler>
-            </div>
-            <MarkdownEditor.Content />
-          </MarkdownEditor>
+        <section className="mb-4 flex flex-col gap-4">
+          <MarkdownEditor label="선택지" />
         </section>
-
-        <section className="mb-4">
-          <MarkdownEditor>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="grow text-lg font-bold">정답 내용</h2>
-              <MarkdownEditor.PreviewToggler>
-                {({ isPreview, toggle }) => (
-                  <Button type="button" size="small" onClick={toggle}>
-                    {isPreview ? '편집하기' : '미리보기'}
-                  </Button>
-                )}
-              </MarkdownEditor.PreviewToggler>
-            </div>
-            <MarkdownEditor.Content />
-          </MarkdownEditor>
+        <section className="mb-4 flex flex-col gap-4">
+          <MarkdownEditor
+            label="정답 내용"
+            value={watch('answer')}
+            onChange={(value) => setValue('answer', value ?? '')}
+          />
         </section>
         <Button className="w-full" type="submit">
           작성 완료

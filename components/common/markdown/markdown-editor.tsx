@@ -1,67 +1,47 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
-import MarkdownEditorContext from './markdown-editor-context';
+import React, { useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import Markdown from './markdown';
+import { Label } from '@/components/ui/label';
+import Button from '@/components/common/buttons/button';
 
-export default function MarkdownEditor({
-  children,
-}: {
-  children?: React.ReactNode;
-}) {
-  const [value, setValue] = useState('');
-  const [isPreview, setIsPreview] = useState(false);
-
-  const contextValue = { value, setValue, isPreview, setIsPreview };
-
-  return (
-    <MarkdownEditorContext.Provider value={contextValue}>
-      {children}
-    </MarkdownEditorContext.Provider>
-  );
-}
-
-MarkdownEditor.Content = function Content() {
-  const { value, setValue, isPreview } = useContext(MarkdownEditorContext);
-
-  return (
-    <>
-      {isPreview ? (
-        <Markdown>{value}</Markdown>
-      ) : (
-        <MDEditor
-          id="hello"
-          value={value}
-          onChange={(value) => setValue(value ?? '')}
-          hideToolbar
-          height="auto"
-          preview="edit"
-        />
-      )}
-    </>
-  );
+type MarkdownEditorProps = React.ComponentProps<typeof MDEditor> & {
+  label: string;
 };
 
-MarkdownEditor.PreviewToggler = function PreviewToggler({
-  children,
-}: {
-  children?:
-    | React.ReactNode
-    | ((props: {
-        isPreview: boolean;
-        toggle: VoidFunction;
-      }) => React.ReactNode);
-}) {
-  const { isPreview, setIsPreview } = useContext(MarkdownEditorContext);
+export default function MarkdownEditor({
+  label,
+  value,
+  onChange,
+  ...props
+}: MarkdownEditorProps) {
+  const [isPreview, setIsPreview] = useState(false);
 
   const toggle = () => setIsPreview(!isPreview);
 
   return (
     <>
-      {typeof children === 'function'
-        ? children({ isPreview, toggle })
-        : children}
+      <div className="flex items-center justify-between">
+        <Label className="grow text-lg font-bold">{label}</Label>
+        <Button type="button" size="small" onClick={toggle}>
+          {isPreview ? '편집하기' : '미리보기'}
+        </Button>
+      </div>
+      <div>
+        {isPreview ? (
+          <Markdown>{value ?? ''}</Markdown>
+        ) : (
+          <MDEditor
+            value={value}
+            onChange={onChange}
+            hideToolbar
+            height="auto"
+            preview="edit"
+            {...props}
+          />
+        )}
+      </div>
     </>
   );
-};
+}
