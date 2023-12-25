@@ -8,13 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
-import {
-  type SubmitHandler,
-  useForm,
-  FormProvider,
-  useFormContext,
-  useFieldArray,
-} from 'react-hook-form';
+import { type SubmitHandler, useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -27,6 +21,11 @@ const formSchema = z.object({
   summary: z.string().min(1).max(100),
   difficulty: z.enum(['easy', 'medium', 'hard']),
   hints: z.array(
+    z.object({
+      value: z.string().min(1).max(100),
+    })
+  ),
+  choices: z.array(
     z.object({
       value: z.string().min(1).max(100),
     })
@@ -49,63 +48,61 @@ export default function WriterForm() {
   };
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className="mb-4">
-          <Label className="text-lg font-bold" htmlFor="title">
-            제목
-          </Label>
-          <Input
-            id="title"
-            placeholder="제목을 입력해주세요"
-            {...register('title')}
-          />
-        </section>
-        <section className="mb-4">
-          <Label className="text-lg font-bold" htmlFor="summary">
-            한 줄 소개
-          </Label>
-          <Input id="summary" {...register('summary')} />
-        </section>
-        <section className="mb-4">
-          <Label className="text-lg font-bold" htmlFor="???">
-            난이도
-          </Label>
-          <Input id="???" />
-        </section>
-        <section className="mb-4">
-          <Label className="text-lg font-bold" htmlFor="hint">
-            힌트
-          </Label>
-          <HintSection />
-        </section>
-        <section className="mb-4 flex flex-col gap-4">
-          <MarkdownEditor
-            label="문제 내용"
-            value={watch('description')}
-            onChange={(value) => setValue('description', value ?? '')}
-          />
-        </section>
-        <section className="mb-4 flex flex-col gap-4">
-          <MarkdownEditor label="선택지" />
-        </section>
-        <section className="mb-4 flex flex-col gap-4">
-          <MarkdownEditor
-            label="정답 내용"
-            value={watch('answer')}
-            onChange={(value) => setValue('answer', value ?? '')}
-          />
-        </section>
-        <Button className="w-full" type="submit">
-          작성 완료
-        </Button>
-      </form>
-    </FormProvider>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <section className="mb-4">
+        <Label className="text-lg font-bold" htmlFor="title">
+          제목
+        </Label>
+        <Input
+          id="title"
+          placeholder="제목을 입력해주세요"
+          {...register('title')}
+        />
+      </section>
+      <section className="mb-4">
+        <Label className="text-lg font-bold" htmlFor="summary">
+          한 줄 소개
+        </Label>
+        <Input id="summary" {...register('summary')} />
+      </section>
+      <section className="mb-4">
+        <Label className="text-lg font-bold" htmlFor="???">
+          난이도
+        </Label>
+        <Input id="???" />
+      </section>
+      <section className="mb-4">
+        <Label className="text-lg font-bold" htmlFor="hint">
+          힌트
+        </Label>
+        <Hints form={form} />
+      </section>
+      <section className="mb-4 flex flex-col gap-4">
+        <MarkdownEditor
+          label="문제 내용"
+          value={watch('description')}
+          onChange={(value) => setValue('description', value ?? '')}
+        />
+      </section>
+      <section className="mb-4 flex flex-col gap-4">
+        <MarkdownEditor label="선택지" />
+      </section>
+      <section className="mb-4 flex flex-col gap-4">
+        <MarkdownEditor
+          label="정답 내용"
+          value={watch('answer')}
+          onChange={(value) => setValue('answer', value ?? '')}
+        />
+      </section>
+      <Button className="w-full" type="submit">
+        작성 완료
+      </Button>
+    </form>
   );
 }
 
-function HintSection() {
-  const { control } = useFormContext<Inputs>();
+function Hints({ form }: { form: ReturnType<typeof useForm<Inputs>> }) {
+  const { control } = form;
 
   const {
     append,
