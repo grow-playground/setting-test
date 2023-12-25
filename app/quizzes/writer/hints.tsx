@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +12,7 @@ interface HintsProps {
 }
 
 export default function Hints({ form }: HintsProps) {
-  const { control } = form;
+  const { control, register, setValue, getValues } = form;
 
   const {
     append,
@@ -21,15 +20,14 @@ export default function Hints({ form }: HintsProps) {
     remove,
   } = useFieldArray({ control, name: 'hints' });
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const addHint = () => {
-    if (!inputRef.current || !inputRef.current.value) {
+    const value = getValues('hintInput');
+
+    if (!value) {
       return;
     }
 
-    const value = inputRef.current.value;
-    inputRef.current.value = '';
+    setValue('hintInput', '');
 
     if (hints.some((hint) => hint.value === value)) {
       return;
@@ -46,9 +44,9 @@ export default function Hints({ form }: HintsProps) {
     <>
       <div className="flex w-full space-x-2">
         <Input
+          {...register('hintInput')}
           id="hint"
           autoComplete="off"
-          ref={inputRef}
           onKeyDown={(e) => e.key === 'Enter' && addHint()}
         />
         <Button

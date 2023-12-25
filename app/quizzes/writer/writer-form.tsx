@@ -17,11 +17,13 @@ const formSchema = z.object({
   title: z.string().min(1).max(100),
   summary: z.string().min(1).max(100),
   difficulty: z.enum(['easy', 'medium', 'hard']),
+  hintInput: z.string().min(1).max(100),
   hints: z.array(
     z.object({
       value: z.string().min(1).max(100),
     })
   ),
+  choiceInput: z.string().min(1).max(100),
   choices: z.array(
     z.object({
       value: z.string().min(1).max(100),
@@ -51,16 +53,16 @@ export default function WriterForm() {
           제목
         </Label>
         <Input
+          {...register('title')}
           id="title"
           placeholder="제목을 입력해주세요"
-          {...register('title')}
         />
       </section>
       <section className="mb-4">
         <Label className="text-lg font-bold" htmlFor="summary">
           한 줄 소개
         </Label>
-        <Input id="summary" {...register('summary')} />
+        <Input {...register('summary')} id="summary" />
       </section>
       <section className="mb-4">
         <Label className="text-lg font-bold" htmlFor="???">
