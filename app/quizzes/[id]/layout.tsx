@@ -2,12 +2,12 @@ import BackHeader from '@/components/common/headers/back-header';
 import NavLink from '@/components/common/link/nav-link';
 import React from 'react';
 
-interface LayoutProps {
+type LayoutProps = {
   children: React.ReactNode;
   params: {
     id: string;
   };
-}
+};
 
 export default function Layout({ children, params }: LayoutProps) {
   const quizId = Number(params.id) ?? 0;

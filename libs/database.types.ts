@@ -41,6 +41,32 @@ export interface Database {
           },
         ];
       };
+      hints: {
+        Row: {
+          description: string;
+          id: number;
+          quiz_id: number;
+        };
+        Insert: {
+          description: string;
+          id?: number;
+          quiz_id: number;
+        };
+        Update: {
+          description?: string;
+          id?: number;
+          quiz_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'hints_quiz_id_fkey';
+            columns: ['quiz_id'];
+            isOneToOne: false;
+            referencedRelation: 'quizzes';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       notes: {
         Row: {
           id: number;
@@ -182,119 +208,6 @@ export interface Database {
         Relationships: [
           {
             foreignKeyName: 'quizzes_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      quizzes_before: {
-        Row: {
-          answer: number | null;
-          answer_description: string | null;
-          category: string | null;
-          choices: string | null;
-          created_at: string;
-          description: string | null;
-          id: number;
-          user_id: string | null;
-        };
-        Insert: {
-          answer?: number | null;
-          answer_description?: string | null;
-          category?: string | null;
-          choices?: string | null;
-          created_at?: string;
-          description?: string | null;
-          id?: number;
-          user_id?: string | null;
-        };
-        Update: {
-          answer?: number | null;
-          answer_description?: string | null;
-          category?: string | null;
-          choices?: string | null;
-          created_at?: string;
-          description?: string | null;
-          id?: number;
-          user_id?: string | null;
-        };
-        Relationships: [];
-      };
-      test_quizzes: {
-        Row: {
-          created_at: string;
-          description: string;
-          difficulty: Database['public']['Enums']['difficulty'];
-          id: number;
-          summary: string;
-          title: string;
-          updated_at: string;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          description: string;
-          difficulty: Database['public']['Enums']['difficulty'];
-          id?: number;
-          summary: string;
-          title: string;
-          updated_at?: string;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string;
-          description?: string;
-          difficulty?: Database['public']['Enums']['difficulty'];
-          id?: number;
-          summary?: string;
-          title?: string;
-          updated_at?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'test_quizzes_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      test_quizzessubmissions: {
-        Row: {
-          created_at: string;
-          quiz_id: number;
-          success: boolean;
-          updated_at: string;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          quiz_id: number;
-          success: boolean;
-          updated_at?: string;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string;
-          quiz_id?: number;
-          success?: boolean;
-          updated_at?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'test_quizzessubmissions_quiz_id_fkey';
-            columns: ['quiz_id'];
-            isOneToOne: false;
-            referencedRelation: 'test_quizzes';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'test_quizzessubmissions_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: false;
             referencedRelation: 'users';

@@ -39,6 +39,17 @@ const quizAPI = {
     return data;
   },
 
+  getHintsOfQuiz: async (quizId: number) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('hints')
+      .select('*')
+      .eq('quiz_id', quizId);
+
+    return data;
+  },
+
   postQuizSubmission: async (params: { quizId: number; choiceId: number }) => {
     const { quizId, choiceId } = params;
 
