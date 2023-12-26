@@ -21,10 +21,6 @@ const quizAPI = {
           .eq('user_id', session?.user.id ?? '')
       : { data: null };
 
-    if (!quizzes) {
-      throw new Error('잘못된 접근');
-    }
-
     const quizzesTable = await QuizTableSchema.transform((quiz) => {
       const success = userquizSubmissions?.find(
         (submission) => submission.quiz_id === quiz.id
@@ -80,6 +76,24 @@ const quizAPI = {
       .from('hints')
       .select('*')
       .eq('quiz_id', quizId);
+
+    return data;
+  },
+
+  getAnswersOfQuiz: async (quizId: number) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('choices')
+      .select('description, answer_description')
+      .eq('quiz_id', quizId)
+      .eq('answer', true)
+      .limit(1)
+      .single();
+
+    if (!data) {
+      throw new Error('정답이 존재하지 않습니다.');
+    }
 
     return data;
   },

@@ -33,6 +33,11 @@ const quizOptions = {
       queryKey: [...quizOptions.detail(quizId).queryKey, 'hints'],
       queryFn: () => quizAPI.getHintsOfQuiz(quizId),
     }),
+  answers: (quizId: number) =>
+    queryOptions({
+      queryKey: [...quizOptions.detail(quizId).queryKey, 'hints'],
+      queryFn: () => quizAPI.getAnswersOfQuiz(quizId),
+    }),
 };
 
 export default quizOptions;
