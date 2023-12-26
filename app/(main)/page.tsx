@@ -1,14 +1,25 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
-import KakaoButton from '../auth/kakao-button';
-import { QuizCard } from '@/components/quiz/quiz-card';
-import FullButton from '@/components/common/buttons/full-button';
+import TypeTimeLogo from '@/assets/images/type-time-logo.png';
+import Image from 'next/image';
 import Button from '@/components/common/buttons/button';
-import BaseHeader from '@/components/common/headers/base-header';
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from '@tanstack/react-query';
+import quizOptions from '@/services/quiz/options';
+import QuizTable from './quiz-table';
+import KakaoButton from '../auth/kakao-button';
+import Header from '@/components/common/headers/header';
 
 export default async function Page() {
+  const queryClient = new QueryClient();
+
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
+
+  await queryClient.prefetchQuery(quizOptions.all());
 
   const {
     data: { user },
@@ -32,85 +43,27 @@ export default async function Page() {
   );
 
   return (
-    <>
-      <BaseHeader />
-      <div>
-        {/* TODO: 임시 구현-유저 페이지에 로그아웃 구현되면 제거 예정 */}
-        {HeaderRightArea}
-      </div>
-      <main>
-        <div className="flex flex-col gap-6">
-          <QuizCard
-            status="correct"
-            difficulty="easy"
-            title="2 Get Return Type"
-            summary="함수의 반환 타입을 만들어주세요"
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Header
+        leftArea={
+          <Image
+            src={TypeTimeLogo}
+            alt="타입타임 로고"
+            width={158}
+            height={63}
+            priority
           />
-          <QuizCard
-            status="wrong"
-            difficulty="hard"
-            title="2 Get Return Type"
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            difficulty="medium"
-            title="2 Get Return Type"
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            difficulty="medium"
-            title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-          illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-          eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-          aspernatur laudantium."
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            difficulty="medium"
-            title="2 Get Return Type"
-            summary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-            illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-            eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-            aspernatur laudantium."
-          />
-          <QuizCard
-            difficulty="medium"
-            title="2 Get Return Type"
-            summary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-            illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-            eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-            aspernatur laudantium."
-          />
-          <QuizCard
-            difficulty="medium"
-            title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-          illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-          eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-          aspernatur laudantium."
-            summary="함수의 반환 타입을 만들어주세요"
-          />
-          <QuizCard
-            status="wrong"
-            difficulty="medium"
-            title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-          illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-          eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-          aspernatur laudantium."
-            summary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam iure
-            illum inventore hic perspiciatis, voluptatem eos corrupti mollitia
-            eveniet ad rem quam tenetur vel, repellat cupiditate sint facilis
-            aspernatur laudantium."
-          />
-        </div>
+        }
+        rightArea={HeaderRightArea}
+      />
 
-        <FullButton>제출하기(너비 100%)</FullButton>
-      </main>
+      <QuizTable />
 
       <div className="h-16">
         <div className="fixed bottom-0 h-16 w-[28rem] bg-white">
           혹시 몰라서 추가해 본 바텀시트...
         </div>
       </div>
-    </>
+    </HydrationBoundary>
   );
 }
