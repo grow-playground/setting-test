@@ -78,7 +78,8 @@ export default function Comments({ disable, quizId, userId }: CommentsProps) {
         <FullButton disabled={disable || isLoading}>제출</FullButton>
         <p className="mt-4 text-destructive">{errors.content?.message}</p>
       </form>
-      <>
+
+      <div className="flex flex-col gap-8 whitespace-break-spaces">
         {comments?.map((comment) => (
           <div className="flex flex-col gap-4" key={comment.id}>
             <div className="flex items-center justify-between">
@@ -101,7 +102,7 @@ export default function Comments({ disable, quizId, userId }: CommentsProps) {
             <p>{comment.content}</p>
           </div>
         ))}
-      </>
+      </div>
     </div>
   );
 }
