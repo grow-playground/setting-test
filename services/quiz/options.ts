@@ -18,7 +18,7 @@ const quizOptions = {
 
   submitted: (userId: string) =>
     queryOptions({
-      queryKey: [...quizOptions.all, 'submitted', userId],
+      queryKey: [...quizOptions.all().queryKey, 'submitted', userId],
       queryFn: () => quizAPI.getSubmittedQuiz(userId),
     }),
 
