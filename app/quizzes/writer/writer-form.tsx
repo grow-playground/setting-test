@@ -9,6 +9,13 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Hints from './hints';
 import Choices from './choices';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 // 제어 컴포넌트여야되는 거
 // 1. 힌트 (가변 갯수)
@@ -57,6 +64,7 @@ export default function WriterForm() {
           className="bg-white"
           id="title"
           placeholder="제목을 입력해주세요"
+          autoComplete="off"
         />
       </section>
       <section className="mb-4">
@@ -71,17 +79,27 @@ export default function WriterForm() {
           className="bg-white"
           id="summary"
           placeholder="한 줄 소개를 입력해주세요"
+          autoComplete="off"
         />
       </section>
       <section className="mb-4">
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="???">
           난이도
         </Label>
-        <Input
-          id="???"
-          className="bg-white"
-          placeholder="난이도를 선택해주세요"
-        />
+        <Select
+          onValueChange={(value) =>
+            setValue('difficulty', value as Inputs['difficulty'])
+          }
+        >
+          <SelectTrigger className="bg-white">
+            <SelectValue placeholder="난이도를 선택해주세요" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="easy">쉬움</SelectItem>
+            <SelectItem value="medium">보통</SelectItem>
+            <SelectItem value="hard">어려움</SelectItem>
+          </SelectContent>
+        </Select>
       </section>
       <section className="mb-4">
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="hint">
