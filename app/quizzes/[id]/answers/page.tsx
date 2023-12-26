@@ -4,17 +4,30 @@ import {
   QueryClient,
   dehydrate,
 } from '@tanstack/react-query';
-import QuizAnswer from './quiz-answer';
+import QuizAnswer from './_components/quiz-answer';
+import Comments from './_components/comments';
+import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
+import { Separator } from '@/components/ui/separator';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   const quizId = Number(params.id) ?? 0;
+
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   await queryClient.prefetchQuery(quizOptions.answers(quizId));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <QuizAnswer quizId={quizId} />
+      <Separator className="my-4" />
+      <Comments disable={session} />
     </HydrationBoundary>
   );
 }
