@@ -1,13 +1,14 @@
 'use client';
 
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type Ref } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/libs/utils';
 
 type NavLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> &
-  VariantProps<typeof navLink>;
+  VariantProps<typeof navLink> &
+  LinkProps;
 
 const navLink = cva(
   ['border-b-2 border-b-neutral-300 pb-2 text-center text-neutral-300'],
