@@ -12,10 +12,8 @@ export default async function Profile() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log(user);
-
   return (
-    <Link href={user ? '' : '/auth'} scroll={false}>
+    <Link href={user ? '/my' : '/auth'} scroll={false}>
       <div className="flex items-center">
         <Image
           src={UserProfile}

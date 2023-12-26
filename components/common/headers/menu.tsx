@@ -47,7 +47,11 @@ export default async function Menu() {
           <Profile />
           <Separator className="my-4" />
 
-          <Link href="/my" scroll={false} className="flex gap-4">
+          <Link
+            href={user ? '/my' : '/auth'}
+            scroll={false}
+            className="flex gap-4"
+          >
             <Image src={ProfileIcon} width={24} height={24} alt="프로필" />
             마이페이지
           </Link>
