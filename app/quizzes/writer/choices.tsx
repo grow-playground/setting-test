@@ -21,6 +21,7 @@ export default function Choices({ form }: ChoicesProps) {
   const {
     watch,
     setValue,
+    trigger,
     formState: { errors },
   } = form;
 
@@ -41,16 +42,17 @@ export default function Choices({ form }: ChoicesProps) {
             <AccordionContent className="p-2">
               <MDEditor
                 placeholder="선택지를 입력해주세요"
+                preview="edit"
+                hideToolbar
+                height={110}
+                textareaProps={{
+                  maxLength: 200,
+                }}
                 value={watch(`choices.${index}.value`)}
                 onChange={(value) =>
                   setValue(`choices.${index}.value`, value ?? '')
                 }
-                textareaProps={{
-                  maxLength: 200,
-                }}
-                hideToolbar
-                height={110}
-                preview="edit"
+                onBlur={() => trigger(['choices'])}
               />
               {watch(`choices.${index}.value`) && (
                 <Markdown className="min-h-[2rem]">

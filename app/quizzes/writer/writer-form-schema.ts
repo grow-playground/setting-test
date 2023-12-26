@@ -138,6 +138,7 @@ type Inputs = z.infer<typeof formSchema>;
 const useWriterForm = () => {
   return useForm<Inputs>({
     resolver: zodResolver(formSchema),
+    mode: 'onBlur',
     defaultValues: {
       title: '',
       difficulty: undefined,

@@ -24,7 +24,7 @@ export default function WriterForm() {
     handleSubmit,
     watch,
     setValue,
-    setError,
+    trigger,
     formState: { errors },
   } = form;
 
@@ -65,7 +65,7 @@ export default function WriterForm() {
             <Select
               onValueChange={(value) => {
                 setValue('difficulty', value as Inputs['difficulty']);
-                setError('difficulty', {});
+                trigger(['difficulty']);
               }}
             >
               <SelectTrigger className="bg-white" id="difficulty">
@@ -124,6 +124,7 @@ export default function WriterForm() {
           headerStyle="mb-4"
           value={watch('description')}
           onChange={(value) => setValue('description', value ?? '')}
+          onBlur={() => trigger(['description'])}
         />
         {errors.description && (
           <p className="mt-2 text-sm text-red-500">
@@ -165,6 +166,7 @@ export default function WriterForm() {
           headerStyle="mb-4"
           value={watch('answerDescription')}
           onChange={(value) => setValue('answerDescription', value ?? '')}
+          onBlur={() => trigger(['answerDescription'])}
         />
         {errors.answerDescription && (
           <p className="mt-2 text-sm text-red-500">
