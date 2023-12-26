@@ -13,10 +13,13 @@ const quizAPI = {
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    const { data: userquizSubmissions } = await supabase
-      .from('quizsubmissions')
-      .select('*')
-      .eq('user_id', session?.user.id ?? '');
+
+    const { data: userquizSubmissions } = session
+      ? await supabase
+          .from('quizsubmissions')
+          .select('*')
+          .eq('user_id', session?.user.id ?? '')
+      : { data: null };
 
     if (!quizzes) {
       throw new Error('잘못된 접근');
