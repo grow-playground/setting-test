@@ -32,7 +32,6 @@ const quizAPI = {
       .array()
       .parseAsync(quizzes);
 
-    console.log(quizzesTable);
     return quizzesTable;
   },
 
@@ -56,8 +55,6 @@ const quizAPI = {
       .from('quizsubmissions')
       .select(`*, quizzes (id, *)`)
       .eq('user_id', userId);
-
-    console.log(data);
 
     return data;
   },
