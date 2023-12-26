@@ -26,7 +26,7 @@ export default function Choices({ form }: ChoicesProps) {
       {Array.from({ length: 4 }).map((_, index) => (
         <Accordion type="multiple" key={index}>
           <AccordionItem value={`item-${index + 1}`}>
-            <AccordionTrigger className="py-2">{index + 1}번</AccordionTrigger>
+            <AccordionTrigger>{index + 1}번</AccordionTrigger>
             <AccordionContent className="p-2">
               <MDEditor
                 placeholder="선택지를 입력해주세요"

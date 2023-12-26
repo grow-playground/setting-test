@@ -56,16 +56,45 @@ export default function WriterForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <section className="mb-4">
-        <Label className="mb-2 inline-block text-lg font-bold" htmlFor="title">
-          제목
-        </Label>
-        <Input
-          {...register('title')}
-          className="bg-white"
-          id="title"
-          placeholder="제목을 입력해주세요"
-          autoComplete="off"
-        />
+        <div className="flex justify-between gap-4">
+          <div className="grow">
+            <Label
+              className="mb-2 inline-block text-lg font-bold"
+              htmlFor="title"
+            >
+              제목
+            </Label>
+            <Input
+              {...register('title')}
+              className="bg-white"
+              id="title"
+              placeholder="제목을 입력해주세요"
+              autoComplete="off"
+            />
+          </div>
+          <div className="w-24">
+            <Label
+              className="mb-2 inline-block text-lg font-bold"
+              htmlFor="difficulty"
+            >
+              난이도
+            </Label>
+            <Select
+              onValueChange={(value) =>
+                setValue('difficulty', value as Inputs['difficulty'])
+              }
+            >
+              <SelectTrigger className="bg-white" id="difficulty">
+                <SelectValue placeholder="선택" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="easy">쉬움</SelectItem>
+                <SelectItem value="medium">보통</SelectItem>
+                <SelectItem value="hard">어려움</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </section>
       <section className="mb-4">
         <Label
@@ -81,25 +110,6 @@ export default function WriterForm() {
           placeholder="한 줄 소개를 입력해주세요"
           autoComplete="off"
         />
-      </section>
-      <section className="mb-4">
-        <Label className="mb-2 inline-block text-lg font-bold" htmlFor="???">
-          난이도
-        </Label>
-        <Select
-          onValueChange={(value) =>
-            setValue('difficulty', value as Inputs['difficulty'])
-          }
-        >
-          <SelectTrigger className="bg-white">
-            <SelectValue placeholder="난이도를 선택해주세요" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="easy">쉬움</SelectItem>
-            <SelectItem value="medium">보통</SelectItem>
-            <SelectItem value="hard">어려움</SelectItem>
-          </SelectContent>
-        </Select>
       </section>
       <section className="mb-4">
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="hint">
