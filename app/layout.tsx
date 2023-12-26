@@ -27,7 +27,7 @@ export default function RootLayout({
           <PcScreen />
 
           <div id="app-background" />
-          <div id="app-screen" className="bg-background">
+          <div id="app-screen" className="relative bg-background">
             {/* NOTE: OverlayProvider에 div가 감싸져야 한다. */}
             <OverlayProvider>{children}</OverlayProvider>
           </div>
