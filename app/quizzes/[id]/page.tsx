@@ -8,13 +8,21 @@ import MarkDown from '@/components/ui/markdown';
 import Link from 'next/link';
 import ChoiceForm from './choice-form';
 import quizOptions from '@/services/quiz/options';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   const quizId = Number(params.id) ?? 0;
 
-  const [quiz] = await Promise.all([
+  const [quiz, hints] = await Promise.all([
     queryClient.fetchQuery(quizOptions.detail(quizId)),
+    queryClient.fetchQuery(quizOptions.hints(quizId)),
     queryClient.fetchQuery(quizOptions.choices(quizId)),
   ]);
 
@@ -35,7 +43,22 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </section>
       <MarkDown style={dracula}>{quiz?.description ?? ''}</MarkDown>
-      <ChoiceForm quizId={quizId} />
+      <ChoiceForm quizId={quizId}>
+        {hints && hints?.length > 0 ? (
+          <Accordion type="multiple">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>힌트 보기</AccordionTrigger>
+              <AccordionContent className="flex flex-wrap gap-1">
+                {hints?.map((hint) => (
+                  <Badge key={hint.id} variant="secondary">
+                    {hint.description}
+                  </Badge>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ) : null}
+      </ChoiceForm>
     </HydrationBoundary>
   );
 }

@@ -6,7 +6,10 @@ const quizAPI = {
   getQuizzes: async () => {
     const supabase: SupabaseClient<Database> = createClient();
 
-    const { data: quizzes } = await supabase.from('quizzes').select('*');
+    const { data: quizzes } = await supabase
+      .from('quizzes')
+      .select('*')
+      .order('id', { ascending: true });
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -29,6 +32,7 @@ const quizAPI = {
       .array()
       .parseAsync(quizzes);
 
+    console.log(quizzesTable);
     return quizzesTable;
   },
 
@@ -45,12 +49,36 @@ const quizAPI = {
     return data;
   },
 
+  getSubmittedQuiz: async (userId: string) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('quizsubmissions')
+      .select(`*, quizzes (id, *)`)
+      .eq('user_id', userId);
+
+    console.log(data);
+
+    return data;
+  },
+
   getChoicesOfQuiz: async (quizId: number) => {
     const supabase: SupabaseClient<Database> = createClient();
 
     const { data } = await supabase
       .from('choices')
       .select(`id, quiz_id, description`)
+      .eq('quiz_id', quizId);
+
+    return data;
+  },
+
+  getHintsOfQuiz: async (quizId: number) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('hints')
+      .select('*')
       .eq('quiz_id', quizId);
 
     return data;

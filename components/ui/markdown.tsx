@@ -5,9 +5,9 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import remarkGfm from 'remark-gfm';
 
-interface MarkdownProps extends React.ComponentProps<typeof SyntaxHighlighter> {
+type MarkdownProps = React.ComponentProps<typeof SyntaxHighlighter> & {
   className?: string;
-}
+};
 
 export default function MarkDown({
   children,

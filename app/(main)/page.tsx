@@ -1,10 +1,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
-import KakaoButton from '../auth/callback/kakao-button';
 import TypeTimeLogo from '@/assets/images/type-time-logo.png';
 import Image from 'next/image';
 import Button from '@/components/common/buttons/button';
-import Header from '@/components/header';
 import {
   HydrationBoundary,
   QueryClient,
@@ -12,6 +10,8 @@ import {
 } from '@tanstack/react-query';
 import quizOptions from '@/services/quiz/options';
 import QuizTable from './quiz-table';
+import KakaoButton from '../auth/kakao-button';
+import Header from '@/components/common/headers/header';
 
 export default async function Page() {
   const queryClient = new QueryClient();
