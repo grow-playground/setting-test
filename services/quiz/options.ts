@@ -2,17 +2,23 @@ import { queryOptions } from '@tanstack/react-query';
 import quizAPI from './api';
 
 const quizOptions = {
-  all: ['quizzes'] as const,
+  default: ['quizzes'] as const,
+
+  all: () =>
+    queryOptions({
+      queryKey: [...quizOptions.default],
+      queryFn: () => quizAPI.getQuizzes(),
+    }),
 
   detail: (quizId: number) =>
     queryOptions({
-      queryKey: [...quizOptions.all, 'detail', quizId],
+      queryKey: [...quizOptions.default, 'detail', quizId],
       queryFn: () => quizAPI.getQuiz(quizId),
     }),
 
   submitted: (userId: string) =>
     queryOptions({
-      queryKey: [...quizOptions.all, 'submitted', userId],
+      queryKey: [...quizOptions.all().queryKey, 'submitted', userId],
       queryFn: () => quizAPI.getSubmittedQuiz(userId),
     }),
 

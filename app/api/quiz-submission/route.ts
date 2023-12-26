@@ -7,14 +7,11 @@ export async function POST(request: NextRequest) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
-  const validateBody = await request.json().then((body) =>
-    z
-      .object({
-        quizId: z.number(),
-        choiceId: z.number(),
-      })
-      .safeParse(body)
-  );
+  const validateBody = await request
+    .json()
+    .then((body) =>
+      z.object({ quizId: z.number(), choiceId: z.number() }).safeParse(body)
+    );
 
   if (!validateBody.success) {
     return NextResponse.json(

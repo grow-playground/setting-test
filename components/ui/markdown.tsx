@@ -26,7 +26,7 @@ export default function MarkDown({
           return language ? (
             <SyntaxHighlighter
               {...rest}
-              customStyle={{ padding: '0', overflow: 'hidden' }}
+              customStyle={{ padding: '0', overflow: 'auto' }}
               language={language}
               style={style}
               ref={null}
