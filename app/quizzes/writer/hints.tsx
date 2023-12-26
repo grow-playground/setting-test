@@ -12,7 +12,13 @@ type HintsProps = {
 };
 
 export default function Hints({ form }: HintsProps) {
-  const { control, register, setValue, getValues } = form;
+  const {
+    control,
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = form;
 
   const {
     append,
@@ -49,7 +55,12 @@ export default function Hints({ form }: HintsProps) {
           id="hint"
           autoComplete="off"
           placeholder="힌트를 입력해주세요"
-          onKeyDown={(e) => e.key === 'Enter' && addHint()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              addHint();
+            }
+          }}
         />
         <Button
           type="button"
@@ -60,8 +71,13 @@ export default function Hints({ form }: HintsProps) {
           <PlusIcon />
         </Button>
       </div>
+
+      <p className="mt-2 text-sm text-gray-600">
+        문제를 풀기 위해 학습해야 할 키워드가 있다면 제안해주세요.
+      </p>
+
       {hints && hints.length > 0 && (
-        <div className="mt-2 flex gap-2">
+        <div className="mt-2 flex flex-wrap gap-2">
           {hints.map((hint, idx) => (
             <Badge
               key={idx}
@@ -80,9 +96,15 @@ export default function Hints({ form }: HintsProps) {
         </div>
       )}
 
-      <p className="mt-2 text-sm text-gray-600">
-        문제를 풀기 위해 학습해야 할 키워드가 있다면 제안해주세요.
-      </p>
+      {errors.hints && (
+        <p className="mt-2 text-sm text-red-500">{errors.hints?.message}</p>
+      )}
+
+      {errors.hints?.[0] && (
+        <p className="mt-2 text-sm text-red-500">
+          {errors.hints?.[0].value?.message}
+        </p>
+      )}
     </>
   );
 }

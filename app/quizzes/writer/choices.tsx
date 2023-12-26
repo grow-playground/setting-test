@@ -18,7 +18,11 @@ type ChoicesProps = {
 };
 
 export default function Choices({ form }: ChoicesProps) {
-  const { watch, setValue } = form;
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = form;
 
   return (
     <>
@@ -48,13 +52,27 @@ export default function Choices({ form }: ChoicesProps) {
                 height={110}
                 preview="edit"
               />
-              <Markdown className="min-h-[2rem]">
-                {watch(`choices.${index}.value`) ?? ''}
-              </Markdown>
+              {watch(`choices.${index}.value`) && (
+                <Markdown className="min-h-[2rem]">
+                  {watch(`choices.${index}.value`)}
+                </Markdown>
+              )}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       ))}
+
+      {errors.choices && (
+        <div className="mt-2 text-sm text-red-500 empty:hidden">
+          {errors.choices.message && <p>{errors.choices.message}</p>}
+
+          {Array.isArray(errors.choices) && (
+            <p>
+              {errors.choices.find((choice) => choice?.value)?.value?.message}
+            </p>
+          )}
+        </div>
+      )}
     </>
   );
 }

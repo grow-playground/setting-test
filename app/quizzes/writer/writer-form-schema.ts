@@ -1,3 +1,5 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const formLiteral = {
@@ -23,14 +25,12 @@ const formLiteral = {
   },
   difficulty: {
     item: {
-      value: ['easy', 'medium', 'hard'] as const,
+      value: ['easy', 'medium', 'hard'],
       message: '난이도를 선택해주세요',
     },
   },
   hints: {
-    min: {
-      value: 0,
-    },
+    min: 0,
     max: {
       value: 10,
       message: '힌트는 10개 이하로 입력해주세요',
@@ -51,13 +51,16 @@ const formLiteral = {
     item: {
       min: {
         value: 1,
-        message: '선택지를 입력해주세요',
+        message: '모든 선택지의 내용을 입력해주세요',
       },
       max: {
         value: 200,
         message: '선택지는 200자 이하로 입력해주세요',
       },
     },
+  },
+  answer: {
+    required_error: '정답을 선택해주세요',
   },
   description: {
     min: {
@@ -71,7 +74,7 @@ const formLiteral = {
       message: '정답에 대한 설명을 입력해주세요',
     },
   },
-};
+} as const;
 
 const L = formLiteral;
 
@@ -97,26 +100,57 @@ const formSchema = z.object({
           .max(L.hints.item.max.value, L.hints.item.max.message),
       })
     )
-    .min(L.hints.min.value)
-    .max(L.hints.max.value),
+    .min(L.hints.min)
+    .max(L.hints.max.value, L.hints.max.message),
   choices: z
     .array(
       z.object({
         value: z
-          .string()
+          .string({
+            invalid_type_error: L.choices.item.min.message,
+          })
           .min(L.choices.item.min.value, L.choices.item.min.message)
           .max(L.choices.item.max.value, L.choices.item.max.message),
-      })
+      }),
+      {
+        required_error: L.choices.item.min.message,
+      }
     )
-    .length(L.choices.length),
+    .length(L.choices.length, L.choices.item.min.message),
+  answer: z.coerce
+    .number()
+    .min(1, L.answer.required_error)
+    .max(L.choices.length, L.answer.required_error),
   description: z
-    .string()
+    .string({
+      required_error: L.description.min.message,
+    })
     .min(L.description.min.value, L.description.min.message),
   answerDescription: z
-    .string()
+    .string({
+      required_error: L.answerDescription.min.message,
+    })
     .min(L.answerDescription.min.value, L.answerDescription.min.message),
 });
 
 type Inputs = z.infer<typeof formSchema>;
 
-export { formLiteral, formSchema, type Inputs };
+const useWriterForm = () => {
+  return useForm<Inputs>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      difficulty: undefined,
+      summary: '',
+      description: '',
+      choices: Array.from({ length: formLiteral.choices.length }, () => ({
+        value: '',
+      })),
+      answer: undefined,
+      answerDescription: '',
+      hints: [],
+    },
+  });
+};
+
+export { formLiteral, formSchema, type Inputs, useWriterForm };
