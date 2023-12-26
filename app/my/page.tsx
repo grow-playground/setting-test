@@ -1,5 +1,5 @@
 import { QuizCard } from '@/components/quiz/quiz-card';
-import { getSubmittedQuiz } from '@/hooks/quiz';
+import quizOptions from '@/services/quiz/options';
 import { createClient } from '@/utils/supabase/server';
 import {
   HydrationBoundary,
@@ -17,10 +17,9 @@ export default async function Page() {
 
   const queryClient = new QueryClient();
 
-  const submittedQuiz = await queryClient.fetchQuery({
-    queryKey: ['submitted-quiz', user!.id],
-    queryFn: () => getSubmittedQuiz({ userId: user!.id }),
-  });
+  const submittedQuiz = await queryClient.fetchQuery(
+    quizOptions.submitted(user?.id ?? '')
+  );
 
   return (
     <>
