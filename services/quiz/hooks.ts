@@ -6,6 +6,10 @@ export function useGetQuiz(quizId: number) {
   return useSuspenseQuery(quizOptions.detail(quizId));
 }
 
+export function useGetSubmittedQuiz(userId: string) {
+  return useSuspenseQuery(quizOptions.submitted(userId));
+}
+
 export function useGetChoicesOfQuiz(quizId: number) {
   return useSuspenseQuery(quizOptions.choices(quizId));
 }

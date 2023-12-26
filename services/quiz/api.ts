@@ -15,6 +15,19 @@ const quizAPI = {
     return data;
   },
 
+  getSubmittedQuiz: async (userId: string) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('quizsubmissions')
+      .select(`*, quizzes (id, *)`)
+      .eq('user_id', userId);
+
+    console.log(data);
+
+    return data;
+  },
+
   getChoicesOfQuiz: async (quizId: number) => {
     const supabase: SupabaseClient<Database> = createClient();
 
