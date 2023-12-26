@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <QuizAnswer quizId={quizId} />
       <Separator className="my-4" />
-      <Comments disable={session} quizId={quizId} />
+      <Comments disable={!session} quizId={quizId} userId={session?.user.id} />
     </HydrationBoundary>
   );
 }

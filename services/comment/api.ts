@@ -13,6 +13,22 @@ const commentAPI = {
 
     return data;
   },
+
+  postCommentOfQuiz: async ({
+    userId,
+    quizId,
+    content,
+  }: {
+    userId: string;
+    quizId: number;
+    content: string;
+  }) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    await supabase
+      .from('comments')
+      .insert({ user_id: userId, quiz_id: quizId, content });
+  },
 };
 
 export default commentAPI;

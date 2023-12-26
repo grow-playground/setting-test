@@ -7,12 +7,18 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetCommentsOfQuiz } from '@/services/comment/hooks';
+import {
+  useGetCommentsOfQuiz,
+  usePostCommentOfQuiz,
+} from '@/services/comment/hooks';
 import dayjs from 'dayjs';
+import { useQueryClient } from '@tanstack/react-query';
+import commentOptions from '@/services/comment/options';
 
 type CommentsProps = {
   disable: boolean;
   quizId: number;
+  userId?: string;
 };
 
 const FormSchema = z.object({
@@ -21,20 +27,40 @@ const FormSchema = z.object({
   }),
 });
 
-export default function Comments({ disable, quizId }: CommentsProps) {
+export default function Comments({ disable, quizId, userId }: CommentsProps) {
+  const queryClient = useQueryClient();
+
   const { data: comments = [] } = useGetCommentsOfQuiz(quizId);
+
+  const { mutate: postCommentOfQuiz } = usePostCommentOfQuiz();
 
   const {
     handleSubmit,
     register,
     formState: { errors, isLoading },
+    setValue,
   } = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     reValidateMode: 'onSubmit',
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data, '댓글 생성');
+    if (!userId) {
+      return;
+    }
+
+    const { content } = data;
+    postCommentOfQuiz(
+      { content, quizId, userId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [...commentOptions.quiz(quizId).queryKey],
+          });
+          setValue('content', '');
+        },
+      }
+    );
   };
 
   return (
