@@ -32,7 +32,7 @@ export default function Markdown({
               ref={null}
               {...props}
             >
-              {String(children).replace(/\n$/, '')}
+              {String(children ?? '').replace(/\n$/, '')}
             </SyntaxHighlighter>
           ) : (
             <code
