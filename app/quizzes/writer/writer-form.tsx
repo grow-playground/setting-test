@@ -54,6 +54,7 @@ export default function WriterForm() {
         </Label>
         <Input
           {...register('title')}
+          className="bg-white"
           id="title"
           placeholder="제목을 입력해주세요"
         />
@@ -67,6 +68,7 @@ export default function WriterForm() {
         </Label>
         <Input
           {...register('summary')}
+          className="bg-white"
           id="summary"
           placeholder="한 줄 소개를 입력해주세요"
         />
@@ -75,7 +77,11 @@ export default function WriterForm() {
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="???">
           난이도
         </Label>
-        <Input id="???" placeholder="난이도를 선택해주세요" />
+        <Input
+          id="???"
+          className="bg-white"
+          placeholder="난이도를 선택해주세요"
+        />
       </section>
       <section className="mb-4">
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="hint">

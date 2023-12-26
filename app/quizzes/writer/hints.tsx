@@ -45,6 +45,7 @@ export default function Hints({ form }: HintsProps) {
       <div className="flex w-full space-x-2">
         <Input
           {...register('hintInput')}
+          className="bg-white"
           id="hint"
           autoComplete="off"
           placeholder="힌트를 입력해주세요"
@@ -52,7 +53,7 @@ export default function Hints({ form }: HintsProps) {
         />
         <Button
           type="button"
-          variant="secondary"
+          variant="primary"
           size="icon"
           onClick={() => addHint()}
         >
@@ -64,7 +65,7 @@ export default function Hints({ form }: HintsProps) {
           <Badge
             key={idx}
             className="flex items-center gap-1"
-            variant="secondary"
+            variant="default"
           >
             {hint.value}
             <Cross1Icon
