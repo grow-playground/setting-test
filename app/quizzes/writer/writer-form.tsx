@@ -7,13 +7,7 @@ import { Input } from '@/components/ui/input';
 import { type SubmitHandler, type SubmitErrorHandler } from 'react-hook-form';
 import Hints from './hints';
 import Choices from './choices';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import TitleAndDifficulty from './title-and-difficulty';
 import { Inputs, useWriterForm, formLiteral } from './writer-form-schema';
 
 export default function WriterForm() {
@@ -39,55 +33,7 @@ export default function WriterForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
       <section className="mb-4">
-        <div className="flex justify-between gap-4">
-          <section className="grow">
-            <Label
-              className="mb-2 inline-block text-lg font-bold"
-              htmlFor="title"
-            >
-              제목
-            </Label>
-            <Input
-              {...register('title')}
-              className="bg-white"
-              id="title"
-              placeholder="제목을 입력해주세요"
-              autoComplete="off"
-              maxLength={formLiteral.title.max.value}
-            />
-          </section>
-          <section className="w-24">
-            <Label
-              className="mb-2 inline-block text-lg font-bold"
-              htmlFor="difficulty"
-            >
-              난이도
-            </Label>
-            <Select
-              onValueChange={(value) => {
-                setValue('difficulty', value as Inputs['difficulty']);
-                trigger(['difficulty']);
-              }}
-            >
-              <SelectTrigger className="bg-white" id="difficulty">
-                <SelectValue placeholder="선택" />
-              </SelectTrigger>
-              <SelectContent {...register('difficulty')}>
-                <SelectItem value="easy">쉬움</SelectItem>
-                <SelectItem value="medium">보통</SelectItem>
-                <SelectItem value="hard">어려움</SelectItem>
-              </SelectContent>
-            </Select>
-          </section>
-        </div>
-        {errors.title && (
-          <p className="mt-2 text-sm text-red-500">{errors.title.message}</p>
-        )}
-        {errors.difficulty && (
-          <p className="mt-2 text-sm text-red-500">
-            {errors.difficulty.message}
-          </p>
-        )}
+        <TitleAndDifficulty form={form} />
       </section>
 
       <section className="mb-4">
