@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
-import { Inputs } from './writer-form';
+import { Inputs } from './writer-form-schema';
 
 type HintsProps = {
   form: ReturnType<typeof useForm<Inputs>>;
@@ -60,23 +60,29 @@ export default function Hints({ form }: HintsProps) {
           <PlusIcon />
         </Button>
       </div>
-      <div className="mt-2 flex gap-2">
-        {hints.map((hint, idx) => (
-          <Badge
-            key={idx}
-            className="flex items-center gap-1"
-            variant="default"
-          >
-            {hint.value}
-            <Cross1Icon
-              className="cursor-pointer"
-              width={10}
-              height={10}
-              onClick={() => removeHint(hint.id)}
-            />
-          </Badge>
-        ))}
-      </div>
+      {hints && hints.length > 0 && (
+        <div className="mt-2 flex gap-2">
+          {hints.map((hint, idx) => (
+            <Badge
+              key={idx}
+              className="flex items-center gap-1"
+              variant="default"
+            >
+              {hint.value}
+              <Cross1Icon
+                className="cursor-pointer"
+                width={10}
+                height={10}
+                onClick={() => removeHint(hint.id)}
+              />
+            </Badge>
+          ))}
+        </div>
+      )}
+
+      <p className="mt-2 text-sm text-gray-600">
+        문제를 풀기 위해 학습해야 할 키워드가 있다면 제안해주세요.
+      </p>
     </>
   );
 }

@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 // import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import Hints from './hints';
 import Choices from './choices';
 import {
@@ -16,31 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-// 제어 컴포넌트여야되는 거
-// 1. 힌트 (가변 갯수)
-// 2. 선택지 (최대 텍스트 길이 + 가변 갯수)
-
-const formSchema = z.object({
-  title: z.string().min(1).max(100),
-  summary: z.string().min(1).max(100),
-  difficulty: z.enum(['easy', 'medium', 'hard']),
-  hintInput: z.string().min(0).max(100),
-  hints: z.array(
-    z.object({
-      value: z.string().min(1).max(100),
-    })
-  ),
-  choices: z.array(
-    z.object({
-      value: z.string().min(1).max(100),
-    })
-  ),
-  description: z.string().min(1).max(100),
-  answerDescription: z.string().min(1).max(100),
-});
-
-export type Inputs = z.infer<typeof formSchema>;
+import { Inputs } from './writer-form-schema';
 
 export default function WriterForm() {
   const form = useForm<Inputs>({
@@ -110,6 +85,9 @@ export default function WriterForm() {
           placeholder="한 줄 소개를 입력해주세요"
           autoComplete="off"
         />
+        <p className="mt-2 text-sm text-gray-600">
+          어떤 문제인지 간략하게 소개해주세요.
+        </p>
       </section>
       <section className="mb-4">
         <Label className="mb-2 inline-block text-lg font-bold" htmlFor="hint">

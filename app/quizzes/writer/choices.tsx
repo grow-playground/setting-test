@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
-import { Inputs } from './writer-form';
+import { Inputs } from './writer-form-schema';
 import {
   Accordion,
   AccordionTrigger,
@@ -26,7 +26,14 @@ export default function Choices({ form }: ChoicesProps) {
       {Array.from({ length: 4 }).map((_, index) => (
         <Accordion type="multiple" key={index}>
           <AccordionItem value={`item-${index + 1}`}>
-            <AccordionTrigger>{index + 1}번</AccordionTrigger>
+            <AccordionTrigger>
+              <p>
+                {index + 1}번{' '}
+                <span className="text-sm text-gray-500">
+                  ({watch(`choices.${index}.value`)?.length ?? 0}/200)
+                </span>
+              </p>
+            </AccordionTrigger>
             <AccordionContent className="p-2">
               <MDEditor
                 placeholder="선택지를 입력해주세요"
@@ -34,6 +41,9 @@ export default function Choices({ form }: ChoicesProps) {
                 onChange={(value) =>
                   setValue(`choices.${index}.value`, value ?? '')
                 }
+                textareaProps={{
+                  maxLength: 200,
+                }}
                 hideToolbar
                 height={110}
                 preview="edit"
