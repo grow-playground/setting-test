@@ -7,9 +7,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useGetCommentsOfQuiz } from '@/services/comment/hooks';
+import dayjs from 'dayjs';
 
 type CommentsProps = {
   disable: boolean;
+  quizId: number;
 };
 
 const FormSchema = z.object({
@@ -18,9 +21,16 @@ const FormSchema = z.object({
   }),
 });
 
-export default function Comments({ disable }: CommentsProps) {
-  const form = useForm<z.infer<typeof FormSchema>>({
+export default function Comments({ disable, quizId }: CommentsProps) {
+  const { data: comments = [] } = useGetCommentsOfQuiz(quizId);
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isLoading },
+  } = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    reValidateMode: 'onSubmit',
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
@@ -29,40 +39,43 @@ export default function Comments({ disable }: CommentsProps) {
 
   return (
     <div>
-      <h3 className="mb-4 text-lg font-semibold">댓글 (30)</h3>
+      <h3 className="mb-4 text-lg font-semibold">댓글 ({comments?.length})</h3>
 
-      <form className="mb-8" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="mb-8" onSubmit={handleSubmit(onSubmit)}>
         <Textarea
-          {...form.register('content')}
+          {...register('content')}
           disabled={disable}
           placeholder={
-            disable ? '회원만 이용 가능합니다.' : '댓글을 입력해주세요.'
+            disable ? '회원만 이용 가능합니다.' : '자유롭게 의견을 남겨주세요.'
           }
         />
-        <FullButton>제출</FullButton>
+        <FullButton disabled={disable || isLoading}>제출</FullButton>
+        <p className="mt-4 text-destructive">{errors.content?.message}</p>
       </form>
+      <>
+        {comments?.map((comment) => (
+          <div className="flex flex-col gap-4" key={comment.id}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Avatar>
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <AvatarFallback>
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                  </AvatarFallback>
+                </Avatar>
+                <span className="max-w-[150px] truncate">
+                  {comment.users?.name}
+                </span>
+              </div>
+              <span className="text-sm text-slate-500">
+                {dayjs('2023-12-26T14:05:45.449Z').format('MMM DD, YYYY')}
+              </span>
+            </div>
 
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar>
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <AvatarFallback>
-                <Skeleton className="h-10 w-10 rounded-full" />
-              </AvatarFallback>
-            </Avatar>
-            <div>jgjgill</div>
+            <p>{comment.content}</p>
           </div>
-          <span className="text-sm text-slate-500">Jun 12, 2023</span>
-        </div>
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis
-          animi eaque consequuntur magnam voluptates architecto, ipsa accusamus
-          ex recusandae vero, assumenda porro aut eum earum eligendi sapiente
-          unde illo hic?
-        </p>
-      </div>
+        ))}
+      </>
     </div>
   );
 }

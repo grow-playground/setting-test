@@ -9,6 +9,7 @@ import Comments from './_components/comments';
 import { cookies } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
 import { Separator } from '@/components/ui/separator';
+import commentOptions from '@/services/comment/options';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
@@ -22,12 +23,13 @@ export default async function Page({ params }: { params: { id: string } }) {
   } = await supabase.auth.getSession();
 
   await queryClient.prefetchQuery(quizOptions.answers(quizId));
+  await queryClient.prefetchQuery(commentOptions.quiz(quizId));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <QuizAnswer quizId={quizId} />
       <Separator className="my-4" />
-      <Comments disable={session} />
+      <Comments disable={session} quizId={quizId} />
     </HydrationBoundary>
   );
 }
