@@ -1,12 +1,10 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
-import KakaoButton from '../auth/callback/kakao-button';
-import TypeTimeLogo from '@/assets/images/type-time-logo.png';
-import Image from 'next/image';
+import KakaoButton from '../auth/kakao-button';
 import { QuizCard } from '@/components/quiz/quiz-card';
 import FullButton from '@/components/common/buttons/full-button';
 import Button from '@/components/common/buttons/button';
-import Header from '@/components/header';
+import BaseHeader from '@/components/common/headers/base-header';
 
 export default async function Page() {
   const cookieStore = cookies();
@@ -35,19 +33,11 @@ export default async function Page() {
 
   return (
     <>
-      <Header
-        leftArea={
-          <Image
-            src={TypeTimeLogo}
-            alt="타입타임 로고"
-            width={158}
-            height={63}
-            priority
-          />
-        }
-        rightArea={HeaderRightArea}
-      />
-
+      <BaseHeader />
+      <div>
+        {/* TODO: 임시 구현-유저 페이지에 로그아웃 구현되면 제거 예정 */}
+        {HeaderRightArea}
+      </div>
       <main>
         <div className="flex flex-col gap-6">
           <QuizCard

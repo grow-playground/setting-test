@@ -61,7 +61,7 @@ export default function ChoiceForm({ quizId }: { quizId: number }) {
       ))}
       {errorMessage && <p className="my-2 text-red-500">{errorMessage}</p>}
       <Button
-        className="mt-4 flex h-10 w-full items-center justify-center disabled:bg-blue-500"
+        className="mt-4 flex h-10 w-full items-center justify-center disabled:bg-blue-primary"
         disabled={isPending || isSuccess}
       >
         {isSuccess ? (
