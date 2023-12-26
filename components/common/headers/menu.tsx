@@ -57,7 +57,7 @@ export default async function Menu() {
           </Link>
         </div>
 
-        <SheetFooter className="justify-end">
+        <SheetFooter className="flex-row justify-end">
           {user && (
             <>
               <form action={signOut}>
