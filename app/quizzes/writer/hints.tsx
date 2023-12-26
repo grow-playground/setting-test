@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
-import { Inputs } from './writer-form-schema';
+import { Inputs, formLiteral } from './writer-form-schema';
 
 type HintsProps = {
   form: ReturnType<typeof useForm<Inputs>>;
@@ -55,6 +55,7 @@ export default function Hints({ form }: HintsProps) {
           id="hint"
           autoComplete="off"
           placeholder="힌트를 입력해주세요"
+          maxLength={formLiteral.hints.item.max.value}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
@@ -73,7 +74,7 @@ export default function Hints({ form }: HintsProps) {
       </div>
 
       <p className="mt-2 text-sm text-gray-600">
-        문제를 풀기 위해 학습해야 할 키워드가 있다면 제안해주세요.
+        퀴즈를 풀기 위해 학습해야 할 키워드가 있다면 제안해주세요.
       </p>
 
       {hints && hints.length > 0 && (
@@ -97,13 +98,15 @@ export default function Hints({ form }: HintsProps) {
       )}
 
       {errors.hints && (
-        <p className="mt-2 text-sm text-red-500">{errors.hints?.message}</p>
-      )}
+        <div className="mt-2 text-sm text-red-500 empty:hidden">
+          {errors.hints.message && <p>{errors.hints.message}</p>}
 
-      {errors.hints?.[0] && (
-        <p className="mt-2 text-sm text-red-500">
-          {errors.hints?.[0].value?.message}
-        </p>
+          {Array.isArray(errors.hints) && (
+            <p>
+              {errors.hints.find((choice) => choice?.value)?.value?.message}
+            </p>
+          )}
+        </div>
       )}
     </>
   );

@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Inputs, useWriterForm } from './writer-form-schema';
+import { Inputs, useWriterForm, formLiteral } from './writer-form-schema';
 
 export default function WriterForm() {
   const form = useWriterForm();
@@ -53,6 +53,7 @@ export default function WriterForm() {
               id="title"
               placeholder="제목을 입력해주세요"
               autoComplete="off"
+              maxLength={formLiteral.title.max.value}
             />
           </section>
           <section className="w-24">
@@ -102,9 +103,10 @@ export default function WriterForm() {
           id="summary"
           placeholder="한 줄 소개를 입력해주세요"
           autoComplete="off"
+          maxLength={formLiteral.summary.max.value}
         />
         <p className="mt-2 text-sm text-gray-600">
-          어떤 문제인지 간략하게 소개해주세요.
+          어떤 퀴즈인지 간략하게 소개해주세요.
         </p>
         {errors.summary && (
           <p className="mt-2 text-sm text-red-500">{errors.summary.message}</p>
@@ -142,18 +144,20 @@ export default function WriterForm() {
           정답
         </Label>
         <div className="flex justify-around">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index}>
-              <input
-                {...register('answer')}
-                className="me-2"
-                type="radio"
-                id={`answer-${index + 1}`}
-                value={index + 1}
-              />
-              <label htmlFor={`answer-${index + 1}`}>{index + 1}번</label>
-            </div>
-          ))}
+          {Array.from({ length: formLiteral.choices.length }).map(
+            (_, index) => (
+              <div key={index}>
+                <input
+                  {...register('answer')}
+                  className="me-2"
+                  type="radio"
+                  id={`answer-${index + 1}`}
+                  value={index + 1}
+                />
+                <label htmlFor={`answer-${index + 1}`}>{index + 1}번</label>
+              </div>
+            )
+          )}
         </div>
         {errors.answer && (
           <p className="mt-2 text-sm text-red-500">{errors.answer.message}</p>

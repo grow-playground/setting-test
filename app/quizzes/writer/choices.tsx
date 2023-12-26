@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
-import { Inputs } from './writer-form-schema';
+import { Inputs, formLiteral } from './writer-form-schema';
 import {
   Accordion,
   AccordionTrigger,
@@ -28,14 +28,15 @@ export default function Choices({ form }: ChoicesProps) {
   return (
     <>
       <Label className="grow text-lg font-bold">선택지</Label>
-      {Array.from({ length: 4 }).map((_, index) => (
+      {Array.from({ length: formLiteral.choices.length }).map((_, index) => (
         <Accordion type="multiple" key={index}>
           <AccordionItem value={`item-${index + 1}`}>
             <AccordionTrigger>
               <p>
                 {index + 1}번{' '}
                 <span className="text-sm text-gray-500">
-                  ({watch(`choices.${index}.value`)?.length ?? 0}/200)
+                  ({watch(`choices.${index}.value`)?.length ?? 0}/
+                  {formLiteral.choices.item.max.value})
                 </span>
               </p>
             </AccordionTrigger>
@@ -46,7 +47,7 @@ export default function Choices({ form }: ChoicesProps) {
                 hideToolbar
                 height={110}
                 textareaProps={{
-                  maxLength: 200,
+                  maxLength: formLiteral.choices.item.max.value,
                 }}
                 value={watch(`choices.${index}.value`)}
                 onChange={(value) =>
@@ -55,7 +56,7 @@ export default function Choices({ form }: ChoicesProps) {
                 onBlur={() => trigger(['choices'])}
               />
               {watch(`choices.${index}.value`) && (
-                <Markdown className="min-h-[2rem]">
+                <Markdown className="min-h-[2rem]" wrapLongLines={true}>
                   {watch(`choices.${index}.value`)}
                 </Markdown>
               )}
