@@ -8,7 +8,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
 const button = cva(['rounded text-white'], {
   variants: {
     intent: {
-      primary: ['bg-blue', 'hover:bg-blue'],
+      primary: ['bg-blue-primary', 'hover:bg-blue-primary'],
       secondary: ['bg-red-600', 'hover:bg-red-700'],
     },
     size: { small: ['px-2 py-1 text-sm'], medium: ['px-4 py-2 text-base'] },

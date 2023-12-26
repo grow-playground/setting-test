@@ -19,7 +19,9 @@ export default function BackHeader() {
             />
           </NavLink>
         }
-        centerArea={<h1 className="text-xl font-bold text-blue">TypeTime</h1>}
+        centerArea={
+          <h1 className="text-xl font-bold text-blue-primary">TypeTime</h1>
+        }
         rightArea={<Profile />}
       />
     </>
