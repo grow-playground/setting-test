@@ -7,10 +7,10 @@ import Button from '@/components/common/buttons/button';
 import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
 import MarkDown from '@/components/ui/markdown';
 
-interface ChoiceFormProps {
+type ChoiceFormProps = {
   quizId: number;
   children?: React.ReactNode;
-}
+};
 
 export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
   const [errorMessage, setErrorMessage] = useState('');
