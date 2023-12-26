@@ -7,9 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { Cross1Icon, PlusIcon } from '@radix-ui/react-icons';
 import { Inputs } from './writer-form';
 
-interface HintsProps {
+type HintsProps = {
   form: ReturnType<typeof useForm<Inputs>>;
-}
+};
 
 export default function Hints({ form }: HintsProps) {
   const { control, register, setValue, getValues } = form;

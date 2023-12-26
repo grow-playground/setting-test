@@ -13,9 +13,9 @@ import MDEditor from '@uiw/react-md-editor';
 import React from 'react';
 import Markdown from '@/components/common/markdown/markdown';
 
-interface ChoicesProps {
+type ChoicesProps = {
   form: ReturnType<typeof useForm<Inputs>>;
-}
+};
 
 export default function Choices({ form }: ChoicesProps) {
   const { watch, setValue } = form;
