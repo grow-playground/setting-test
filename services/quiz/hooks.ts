@@ -28,3 +28,9 @@ export function useSubmitQuiz() {
     mutationFn: quizAPI.postQuizSubmission,
   });
 }
+
+export function useCreateQuiz() {
+  return useMutation({
+    mutationFn: quizAPI.postQuiz,
+  });
+}
