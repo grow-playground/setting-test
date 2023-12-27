@@ -70,7 +70,7 @@ export const columns: ColumnDef<QuizTable>[] = [
 
 function Filter({ column }: { column: Column<Quiz> }) {
   const onClickToggle =
-    (difficulty: '하' | '중' | '상') =>
+    (difficulty: '쉬움' | '보통' | '어려움') =>
     (e: React.MouseEvent<HTMLButtonElement>) => {
       if (e.currentTarget.dataset.state === 'checked') {
         column.setFilterValue((olds: string[]) =>
@@ -84,31 +84,32 @@ function Filter({ column }: { column: Column<Quiz> }) {
       }
     };
 
-  const filterValue = (column.getFilterValue() as ['하' | '중' | '상']) ?? [];
+  const filterValue =
+    (column.getFilterValue() as ['쉬움' | '보통' | '어려움']) ?? [];
 
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-2">
         <Checkbox
           id="easy-check"
-          checked={filterValue.includes('하')}
-          onClick={onClickToggle('하')}
+          checked={filterValue.includes('쉬움')}
+          onClick={onClickToggle('쉬움')}
         />
         <label htmlFor="easy-check">쉬움</label>
       </div>
       <div className="flex items-center gap-2">
         <Checkbox
           id="medium-check"
-          checked={filterValue.includes('중')}
-          onClick={onClickToggle('중')}
+          checked={filterValue.includes('보통')}
+          onClick={onClickToggle('보통')}
         />
         <label htmlFor="medium-check">보통</label>
       </div>
       <div className="flex items-center gap-2">
         <Checkbox
           id="hard-check"
-          checked={filterValue.includes('상')}
-          onClick={onClickToggle('상')}
+          checked={filterValue.includes('어려움')}
+          onClick={onClickToggle('어려움')}
         />
         <label htmlFor="hard-check">어려움</label>
       </div>
