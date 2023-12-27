@@ -8,8 +8,8 @@ import Button from '@/components/common/buttons/button';
 import { cn } from '@/libs/utils';
 
 type MarkdownEditorProps = React.ComponentProps<typeof MDEditor> & {
-  headerStyle?: string;
   label: string;
+  headerStyle?: string;
 };
 
 export default function MarkdownEditor({
@@ -21,7 +21,7 @@ export default function MarkdownEditor({
 }: MarkdownEditorProps) {
   const [isPreview, setIsPreview] = useState(false);
 
-  const toggle = () => setIsPreview(!isPreview);
+  const toggle = () => setIsPreview((prev) => !prev);
 
   return (
     <>
