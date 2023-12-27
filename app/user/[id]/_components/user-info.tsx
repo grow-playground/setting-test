@@ -1,7 +1,9 @@
 'use client';
 
-export default function UserInfo() {
-  // const { data } = useGetSubmittedQuiz(userId);
+import { useGetUserInfo } from '@/services/user/hook';
 
-  return <h1 className="text-3xl font-bold">{'ㅎㅇ'}</h1>;
+export default function UserInfo({ userId }: { userId: string }) {
+  const { data: userInfo } = useGetUserInfo(userId);
+
+  return userInfo && <h1 className="text-3xl font-bold">{userInfo.name}</h1>;
 }
