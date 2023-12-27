@@ -1,6 +1,6 @@
 import BackButton from '../buttons/back-button';
 import Header from './header';
-import Profile from './profile';
+import Menu from './menu';
 
 export default function BackHeader() {
   return (
@@ -10,7 +10,7 @@ export default function BackHeader() {
         centerArea={
           <h1 className="text-xl font-bold text-blue-primary">TypeTime</h1>
         }
-        rightArea={<Profile />}
+        rightArea={<Menu />}
       />
     </>
   );

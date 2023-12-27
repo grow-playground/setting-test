@@ -1,7 +1,7 @@
 import Header from './header';
 import Image from 'next/image';
 import TypeTimeLogo from '@/assets/images/type-time-logo.png';
-import Profile from './profile';
+import Menu from './menu';
 
 export default function BaseHeader() {
   return (
@@ -15,7 +15,7 @@ export default function BaseHeader() {
           priority
         />
       }
-      rightArea={<Profile />}
+      rightArea={<Menu />}
     />
   );
 }
