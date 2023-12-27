@@ -4,10 +4,10 @@ import quizAPI from './api';
 const quizOptions = {
   default: ['quizzes'] as const,
 
-  all: () =>
+  all: (userId?: string) =>
     queryOptions({
-      queryKey: [...quizOptions.default],
-      queryFn: () => quizAPI.getQuizzes(),
+      queryKey: [...quizOptions.default, userId],
+      queryFn: () => quizAPI.getQuizzes(userId),
     }),
 
   detail: (quizId: number) =>

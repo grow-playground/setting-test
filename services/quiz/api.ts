@@ -3,22 +3,19 @@ import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 const quizAPI = {
-  getQuizzes: async () => {
+  getQuizzes: async (userId?: string) => {
     const supabase: SupabaseClient<Database> = createClient();
 
     const { data: quizzes } = await supabase
       .from('quizzes')
       .select('*')
       .order('id', { ascending: true });
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
 
-    const { data: userquizSubmissions } = session
+    const { data: userquizSubmissions } = userId
       ? await supabase
           .from('quizsubmissions')
           .select('*')
-          .eq('user_id', session?.user.id ?? '')
+          .eq('user_id', userId ?? '')
       : { data: null };
 
     const quizzesTable = await QuizTableSchema.transform((quiz) => {
