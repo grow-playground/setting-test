@@ -15,6 +15,31 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
+import { type Metadata } from 'next';
+
+async function getQuiz(
+  id: string
+): Promise<Database['public']['Tables']['quizzes']['Row']> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/quizzes/${id}`
+  );
+
+  const { quiz } = await res.json();
+
+  return quiz;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const id = params.id;
+
+  const quiz = await getQuiz(id);
+
+  return { title: quiz.title, description: quiz.summary };
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
