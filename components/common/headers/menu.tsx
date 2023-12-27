@@ -48,7 +48,7 @@ export default async function Menu() {
           <Separator className="my-4" />
 
           <Link
-            href={user ? '/my' : '/auth'}
+            href={user ? `/user/${user.id}` : '/auth'}
             scroll={false}
             className="flex gap-4"
           >
