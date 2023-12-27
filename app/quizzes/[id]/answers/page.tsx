@@ -22,8 +22,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  await queryClient.prefetchQuery(quizOptions.answers(quizId));
-  await queryClient.prefetchQuery(commentOptions.quiz(quizId));
+  await Promise.all([
+    queryClient.prefetchQuery(quizOptions.answers(quizId)),
+    queryClient.prefetchQuery(commentOptions.quiz(quizId)),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
