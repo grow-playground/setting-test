@@ -1,4 +1,4 @@
-import { Quiz, QuizTableSchema } from '@/libs/models';
+import { QuizTable, QuizTableSchema } from '@/libs/models';
 import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -52,7 +52,7 @@ const quizAPI = {
       .select(`success, ...quizzes!quizsubmissions_quiz_id_fkey(*)`)
       .eq('user_id', userId);
 
-    return data as unknown as ({ success: boolean } & Quiz)[];
+    return data as unknown as QuizTable[];
   },
 
   getChoicesOfQuiz: async (quizId: number) => {
