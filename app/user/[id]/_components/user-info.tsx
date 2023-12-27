@@ -1,9 +1,9 @@
-'use client';
+type UserInfoProps = {
+  info: {
+    name: string;
+  };
+};
 
-import { useGetUserInfo } from '@/services/user/hook';
-
-export default function UserInfo({ userId }: { userId: string }) {
-  const { data: userInfo } = useGetUserInfo(userId);
-
-  return userInfo && <h1 className="text-3xl font-bold">{userInfo.name}</h1>;
+export default function UserInfo({ info }: UserInfoProps) {
+  return <h1 className="text-3xl font-bold">{info.name}</h1>;
 }
