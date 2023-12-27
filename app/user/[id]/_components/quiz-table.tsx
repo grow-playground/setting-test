@@ -11,7 +11,5 @@ type QuizTableProps = {
 export default function QuizTable({ userId }: QuizTableProps) {
   const { data } = useGetSubmittedQuiz(userId);
 
-  return (
-    <div>{data && <DataTable columns={columns} data={data.quizzes} />}</div>
-  );
+  return <div>{data && <DataTable columns={columns} data={data} />}</div>;
 }
