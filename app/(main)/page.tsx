@@ -1,3 +1,5 @@
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 import {
   HydrationBoundary,
   QueryClient,
@@ -9,13 +11,21 @@ import BaseHeader from '@/components/common/headers/base-header';
 
 export default async function Page() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(quizOptions.all());
+
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  await queryClient.prefetchQuery(quizOptions.all(user?.id));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BaseHeader />
 
-      <QuizTable />
+      <QuizTable userId={user?.id} />
 
       <div className="h-16">
         <div className="fixed bottom-0 h-16 w-[28rem] bg-white">
