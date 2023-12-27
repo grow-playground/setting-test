@@ -32,12 +32,12 @@ export default function Comments({ disable, quizId, userId }: CommentsProps) {
 
   const { data: comments = [] } = useGetCommentsOfQuiz(quizId);
 
-  const { mutate: postCommentOfQuiz } = usePostCommentOfQuiz();
+  const { mutate: postCommentOfQuiz, isPending } = usePostCommentOfQuiz();
 
   const {
     handleSubmit,
     register,
-    formState: { errors, isLoading },
+    formState: { errors },
     setValue,
   } = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -75,7 +75,7 @@ export default function Comments({ disable, quizId, userId }: CommentsProps) {
             disable ? '회원만 이용 가능합니다.' : '자유롭게 의견을 남겨주세요.'
           }
         />
-        <FullButton disabled={disable || isLoading}>제출</FullButton>
+        <FullButton disabled={disable || isPending}>제출</FullButton>
         <p className="mt-4 text-destructive">{errors.content?.message}</p>
       </form>
 

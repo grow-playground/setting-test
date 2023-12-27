@@ -35,7 +35,7 @@ const quizOptions = {
     }),
   answers: (quizId: number) =>
     queryOptions({
-      queryKey: [...quizOptions.detail(quizId).queryKey, 'hints'],
+      queryKey: [...quizOptions.detail(quizId).queryKey, 'answers'],
       queryFn: () => quizAPI.getAnswersOfQuiz(quizId),
     }),
 };
