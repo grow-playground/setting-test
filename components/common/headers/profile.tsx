@@ -13,7 +13,7 @@ export default async function Profile() {
   } = await supabase.auth.getUser();
 
   return (
-    <Link href={user ? '/' : '/auth'} scroll={false}>
+    <Link href={user ? `users/${user.id}` : '/auth'} scroll={false}>
       <Image
         src={UserProfile}
         className="mr-4"

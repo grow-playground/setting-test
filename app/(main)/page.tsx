@@ -19,11 +19,11 @@ export default async function Page() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
-  await queryClient.prefetchQuery(quizOptions.all());
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  await queryClient.prefetchQuery(quizOptions.all(user?.id));
 
   const signOut = async () => {
     'use server';
@@ -57,7 +57,7 @@ export default async function Page() {
         rightArea={HeaderRightArea}
       />
 
-      <QuizTable />
+      <QuizTable userId={user?.id} />
 
       <div className="h-16">
         <div className="fixed bottom-0 h-16 w-[28rem] bg-white">

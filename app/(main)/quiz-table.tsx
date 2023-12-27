@@ -4,8 +4,12 @@ import { columns } from '@/components/quiz/table/columns';
 import DataTable from '@/components/quiz/table/data-table';
 import { useGetQuizzes } from '@/services/quiz/hooks';
 
-export default function QuizTable() {
-  const { data: quizzes } = useGetQuizzes();
+type QuizTableProps = {
+  userId?: string;
+};
+
+export default function QuizTable({ userId }: QuizTableProps) {
+  const { data: quizzes } = useGetQuizzes(userId);
 
   return <div>{quizzes && <DataTable columns={columns} data={quizzes} />}</div>;
 }
