@@ -57,7 +57,7 @@ export default function Hints({ form }: HintsProps) {
           placeholder="힌트를 입력해주세요"
           maxLength={formLiteral.hints.item.max.value}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
               e.preventDefault();
               addHint();
             }
