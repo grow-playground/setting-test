@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <AccordionTrigger>힌트 보기</AccordionTrigger>
                 <AccordionContent className="flex flex-wrap gap-1">
                   {hints?.map((hint) => (
-                    <Badge key={hint.id} variant="secondary">
+                    <Badge key={hint.id} variant="default">
                       {hint.description}
                     </Badge>
                   ))}

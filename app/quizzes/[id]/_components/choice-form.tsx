@@ -38,6 +38,8 @@ export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
       return;
     }
 
+    router.refresh();
+
     submitQuiz(
       {
         quizId,
