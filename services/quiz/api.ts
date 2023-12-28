@@ -1,6 +1,7 @@
 import { QuizTable, QuizTableSchema } from '@/libs/models';
 import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { type Inputs as QuizInputs } from '@/app/quizzes/writer/_components/writer-form-schema';
 
 const quizAPI = {
   getQuizzes: async (userId?: string) => {
@@ -75,6 +76,61 @@ const quizAPI = {
       .eq('quiz_id', quizId);
 
     return data;
+  },
+
+  postQuiz: async (params: Omit<QuizInputs, 'hintInput'>) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const {
+      title,
+      summary,
+      hints,
+      difficulty,
+      description,
+      choices,
+      answer,
+      answerDescription,
+    } = params;
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const { data: quiz } = await supabase
+      .from('quizzes')
+      .insert({
+        title,
+        summary,
+        description,
+        difficulty,
+        user_id: session?.user.id,
+      })
+      .select()
+      .limit(1)
+      .single();
+
+    if (!quiz) {
+      throw new Error('퀴즈 생성 실패');
+    }
+
+    await Promise.all([
+      supabase.from('hints').insert(
+        hints.map((hint) => ({
+          quiz_id: quiz.id,
+          description: hint.value,
+        }))
+      ),
+      supabase.from('choices').insert(
+        choices.map((choice, idx) => ({
+          quiz_id: quiz.id,
+          description: choice.value,
+          answer: idx + 1 === answer ? true : false,
+          answer_description: idx + 1 === answer ? answerDescription : null,
+        }))
+      ),
+    ]);
+
+    return quiz;
   },
 
   getAnswersOfQuiz: async (quizId: number) => {

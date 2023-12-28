@@ -9,7 +9,7 @@ type MarkdownProps = React.ComponentProps<typeof SyntaxHighlighter> & {
   className?: string;
 };
 
-export default function MarkDown({
+export default function Markdown({
   children,
   className,
   style = dracula,
@@ -32,7 +32,7 @@ export default function MarkDown({
               ref={null}
               {...props}
             >
-              {String(children).replace(/\n$/, '')}
+              {String(children ?? '').replace(/\n$/, '')}
             </SyntaxHighlighter>
           ) : (
             <code

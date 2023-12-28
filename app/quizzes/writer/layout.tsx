@@ -1,4 +1,4 @@
-import React from 'react';
+import BackHeader from '@/components/common/headers/back-header';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -7,6 +7,8 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   return (
     <>
+      <BackHeader />
+
       <section className="p-4">{children}</section>
     </>
   );
