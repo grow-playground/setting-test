@@ -18,11 +18,18 @@ export default function Layout({ children, params }: LayoutProps) {
 
       <section className="p-4">
         <article className="mb-4 flex w-full">
-          <NavLink className="grow" href={`/quizzes/${quizId}`}>
+          <NavLink className="grow" replace href={`/quizzes/${quizId}`}>
             퀴즈
           </NavLink>
-          <NavLink className="grow" href={`/quizzes/${quizId}/questions`}>
+          <NavLink
+            className="grow"
+            replace
+            href={`/quizzes/${quizId}/questions`}
+          >
             질문
+          </NavLink>
+          <NavLink className="grow" replace href={`/quizzes/${quizId}/answers`}>
+            솔루션
           </NavLink>
         </article>
         {children}
