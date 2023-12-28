@@ -39,7 +39,7 @@ export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
         choiceId: choice.id,
       },
       {
-        onSuccess: () => router.push(`/quizzes/${quizId}/answer`),
+        onSuccess: () => router.push(`/quizzes/${quizId}/answers`),
         onError: (error) => setErrorMessage(error.message),
       }
     );

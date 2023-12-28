@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run build
+case `uname` in
+  *CYGWIN*|*MINGW*|*MSYS*)
+    npm.cmd run build
+  ;;
+  *)
+    npm run build
+  ;;
+esac

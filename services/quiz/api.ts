@@ -4,24 +4,20 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { type Inputs as QuizInputs } from '@/app/quizzes/writer/_components/writer-form-schema';
 
 const quizAPI = {
-  getQuizzes: async () => {
+  getQuizzes: async (userId?: string) => {
     const supabase: SupabaseClient<Database> = createClient();
 
     const { data: quizzes } = await supabase
       .from('quizzes')
       .select('*')
       .order('id', { ascending: true });
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    const { data: userquizSubmissions } = await supabase
-      .from('quizsubmissions')
-      .select('*')
-      .eq('user_id', session?.user.id ?? '');
 
-    if (!quizzes) {
-      throw new Error('잘못된 접근');
-    }
+    const { data: userquizSubmissions } = userId
+      ? await supabase
+          .from('quizsubmissions')
+          .select('*')
+          .eq('user_id', userId ?? '')
+      : { data: null };
 
     const quizzesTable = await QuizTableSchema.transform((quiz) => {
       const success = userquizSubmissions?.find(
@@ -135,6 +131,24 @@ const quizAPI = {
     ]);
 
     return quiz;
+  },
+
+  getAnswersOfQuiz: async (quizId: number) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('choices')
+      .select('description, answer_description')
+      .eq('quiz_id', quizId)
+      .eq('answer', true)
+      .limit(1)
+      .single();
+
+    if (!data) {
+      throw new Error('정답이 존재하지 않습니다.');
+    }
+
+    return data;
   },
 
   postQuizSubmission: async (params: { quizId: number; choiceId: number }) => {
