@@ -1,4 +1,3 @@
-import BackHeader from '@/components/common/headers/back-header';
 import React from 'react';
 
 type LayoutProps = {
@@ -8,8 +7,6 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   return (
     <>
-      <BackHeader />
-
       <section className="p-4">{children}</section>
     </>
   );
