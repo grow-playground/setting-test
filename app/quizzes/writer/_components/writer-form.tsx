@@ -9,21 +9,31 @@ import Hints from './hints';
 import Choices from './choices';
 import TitleAndDifficulty from './title-and-difficulty';
 import { Inputs, useWriterForm, formLiteral } from './writer-form-schema';
+import { useCreateQuiz } from '@/services/quiz/hooks';
+import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
+import { useRouter } from 'next/navigation';
 
 export default function WriterForm() {
   const form = useWriterForm();
+  const router = useRouter();
+
+  const { mutate: createQuiz, isPending, isSuccess } = useCreateQuiz();
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    setError,
     trigger,
     formState: { errors },
   } = form;
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    createQuiz(data, {
+      onSuccess: (quiz) => router.push(`/quizzes/${quiz.id}`),
+      onError: (error) => setError('root', { message: error.message }),
+    });
   };
 
   const onError: SubmitErrorHandler<Inputs> = (errors) => {
@@ -125,8 +135,21 @@ export default function WriterForm() {
         )}
       </section>
 
-      <Button className="w-full" type="submit">
-        작성 완료
+      {errors.root && (
+        <p className="mt-2 text-sm text-red-500">{errors.root.message}</p>
+      )}
+
+      <Button
+        className="mt-4 flex h-10 w-full items-center justify-center disabled:bg-blue-primary"
+        disabled={isPending || isSuccess}
+      >
+        {isSuccess ? (
+          '성공!'
+        ) : isPending ? (
+          <LoadingSpinner size="lg" weight="sm" />
+        ) : (
+          '퀴즈 만들기'
+        )}
       </Button>
     </form>
   );
