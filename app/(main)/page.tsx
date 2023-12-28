@@ -24,13 +24,8 @@ export default async function Page() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BaseHeader />
-
-      <QuizTable userId={user?.id} />
-
-      <div className="h-16">
-        <div className="fixed bottom-0 h-16 w-[28rem] bg-white">
-          혹시 몰라서 추가해 본 바텀시트...
-        </div>
+      <div className="px-5 py-4">
+        <QuizTable userId={user?.id} />
       </div>
     </HydrationBoundary>
   );
