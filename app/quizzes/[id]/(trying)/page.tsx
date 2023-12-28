@@ -15,7 +15,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
-import NotFound from './not-found';
+import NotFound from '@/components/common/not-found/not-found';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
