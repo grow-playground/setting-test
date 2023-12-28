@@ -5,7 +5,7 @@ import { useGetChoicesOfQuiz, useSubmitQuiz } from '@/services/quiz/hooks';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/button';
 import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
-import MarkDown from '@/components/ui/markdown';
+import MarkDown from '@/components/common/markdown/markdown';
 
 type ChoiceFormProps = {
   quizId: number;
