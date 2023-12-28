@@ -6,7 +6,7 @@ import {
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import MarkDown from '@/components/ui/markdown';
 import Link from 'next/link';
-import ChoiceForm from './choice-form';
+import ChoiceForm from './_components/choice-form';
 import quizOptions from '@/services/quiz/options';
 import {
   Accordion,
