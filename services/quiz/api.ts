@@ -1,7 +1,7 @@
 import { QuizTableSchema } from '@/libs/models';
 import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { Inputs } from '@/app/quizzes/writer/_components/writer-form-schema';
+import { type Inputs as QuizInputs } from '@/app/quizzes/writer/_components/writer-form-schema';
 
 const quizAPI = {
   getQuizzes: async () => {
@@ -82,7 +82,7 @@ const quizAPI = {
     return data;
   },
 
-  postQuiz: async (params: Omit<Inputs, 'hintInput'>) => {
+  postQuiz: async (params: Omit<QuizInputs, 'hintInput'>) => {
     const supabase: SupabaseClient<Database> = createClient();
 
     const {
