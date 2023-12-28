@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (userInfo) {
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        {userInfo && <UserInfo info={userInfo} />}
+        {userInfo && <UserInfo userInfo={userInfo} />}
         <Separator className="my-4" />
 
         <h2 className="text-xl font-bold">제출한 퀴즈</h2>
