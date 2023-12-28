@@ -37,8 +37,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </h1>
             <p>
               By{' '}
-              <Link className="underline" href={`/users/${quiz?.users?.id}`}>
-                {/* TODO: 추후 상세 유저 페이지 라우팅 경로로 변경하기 */}
+              <Link className="underline" href={`/user/${quiz?.users?.id}`}>
                 {quiz?.users?.name}
               </Link>
             </p>
