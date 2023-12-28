@@ -13,6 +13,19 @@ const quizSubmissionAPI = {
     return data;
   },
 
+  getSubmissionOfUser: async (userId: string, quizId: number) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('quizsubmissions')
+      .select(`*, quizzes (id, *)`)
+      .match({ user_id: userId, quiz_id: quizId })
+      .limit(1)
+      .single();
+
+    return data;
+  },
+
   postSubmission: async (params: { quizId: number; choiceId: number }) => {
     const { quizId, choiceId } = params;
 

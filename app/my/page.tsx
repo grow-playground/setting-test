@@ -18,7 +18,7 @@ export default async function Page() {
   const queryClient = new QueryClient();
 
   const submissions = await queryClient.fetchQuery(
-    quizSubmissionOptions.submissions(user?.id ?? '')
+    quizSubmissionOptions.all(user?.id ?? '')
   );
 
   return (

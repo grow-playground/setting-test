@@ -4,11 +4,16 @@ import quizSubmissionAPI from './api';
 const quizSubmissionOptions = {
   default: ['quizsubmissions'] as const,
 
-  submissions: (userId: string) =>
+  all: (userId: string) =>
     queryOptions({
-      queryKey: [...quizSubmissionOptions.default, 'submissions', userId],
+      queryKey: [...quizSubmissionOptions.default, userId],
       queryFn: () => quizSubmissionAPI.getSubmissionsOfUser(userId),
     }),
+
+  detailByQuiz: (userId: string, quizId: number) => ({
+    queryKey: [...quizSubmissionOptions.default, userId, quizId],
+    queryFn: () => quizSubmissionAPI.getSubmissionOfUser(userId, quizId),
+  }),
 };
 
 export default quizSubmissionOptions;
