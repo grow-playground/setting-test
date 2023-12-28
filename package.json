@@ -8,7 +8,8 @@
     "postinstall": "husky install | chmod ug+x .husky/*",
     "lint-staged": "lint-staged",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --only-changed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -66,6 +67,7 @@
     "@types/react-syntax-highlighter": "^15.5.11",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
+    "chromatic": "^10.2.0",
     "encoding": "^0.1.13",
     "eslint": "^8",
     "eslint-config-next": "13.5.6",
