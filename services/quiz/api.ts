@@ -45,17 +45,6 @@ const quizAPI = {
     return data;
   },
 
-  getSubmittedQuiz: async (userId: string) => {
-    const supabase: SupabaseClient<Database> = createClient();
-
-    const { data } = await supabase
-      .from('quizsubmissions')
-      .select(`*, quizzes (id, *)`)
-      .eq('user_id', userId);
-
-    return data;
-  },
-
   getChoicesOfQuiz: async (quizId: number) => {
     const supabase: SupabaseClient<Database> = createClient();
 
@@ -149,23 +138,6 @@ const quizAPI = {
     }
 
     return data;
-  },
-
-  postQuizSubmission: async (params: { quizId: number; choiceId: number }) => {
-    const { quizId, choiceId } = params;
-
-    const res = await fetch('/api/quiz-submission', {
-      method: 'POST',
-      body: JSON.stringify({ quizId, choiceId }),
-    });
-
-    const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json.error);
-    }
-
-    return json;
   },
 };
 

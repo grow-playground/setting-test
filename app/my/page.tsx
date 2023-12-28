@@ -1,5 +1,5 @@
 import { QuizCard } from '@/components/quiz/quiz-card';
-import quizOptions from '@/services/quiz/options';
+import quizSubmissionOptions from '@/services/quiz-submission/options';
 import { createClient } from '@/utils/supabase/server';
 import {
   HydrationBoundary,
@@ -17,8 +17,8 @@ export default async function Page() {
 
   const queryClient = new QueryClient();
 
-  const submittedQuiz = await queryClient.fetchQuery(
-    quizOptions.submitted(user?.id ?? '')
+  const submissions = await queryClient.fetchQuery(
+    quizSubmissionOptions.submissions(user?.id ?? '')
   );
 
   return (
@@ -28,9 +28,9 @@ export default async function Page() {
       </h1>
       <h2 className="text-xl font-bold">풀었던 퀴즈</h2>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        {submittedQuiz && submittedQuiz.length ? (
+        {submissions && submissions.length ? (
           <ul className="flex flex-col gap-6">
-            {submittedQuiz.map(
+            {submissions.map(
               ({ quiz_id, success, quizzes }) =>
                 quizzes && (
                   <QuizCard

@@ -1,4 +1,5 @@
 import quizOptions from '@/services/quiz/options';
+import quizSubmissionOptions from '@/services/quiz-submission/options';
 import {
   HydrationBoundary,
   QueryClient,
@@ -22,10 +23,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  await Promise.all([
+  const [submissions] = await Promise.all([
+    queryClient.fetchQuery(
+      quizSubmissionOptions.submissions(session?.user.id ?? '')
+    ),
     queryClient.prefetchQuery(quizOptions.answers(quizId)),
     queryClient.prefetchQuery(commentOptions.quiz(quizId)),
   ]);
+
+  console.log(submissions);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
