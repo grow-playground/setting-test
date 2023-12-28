@@ -3,6 +3,7 @@ import './globals.css';
 import QueryProvider from '@/providers/query-provider';
 import { PcScreen } from '@/components/pc-screen';
 import OverlayProvider from '@/providers/overlay-provider';
+import GoogleAnalytics from './google-analytics';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -33,6 +34,7 @@ export default function RootLayout({
           </div>
         </body>
       </QueryProvider>
+      <GoogleAnalytics />
     </html>
   );
 }
