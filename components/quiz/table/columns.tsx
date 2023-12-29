@@ -7,32 +7,40 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { Quiz, QuizTable } from '@/libs/models';
+import { cn } from '@/libs/utils';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import Link from 'next/link';
+import { cva } from 'class-variance-authority';
+import Image from 'next/image';
+import XIcon from '@/assets/images/x-icon.png';
+import CheckIcon from '@/assets/images/check-icon.png';
 
 export const columns: ColumnDef<QuizTable>[] = [
   {
     accessorKey: 'success',
-    header: () => <div className="text-left">상태</div>,
+    header: () => <div className="w-full text-center">상태</div>,
     cell: ({ row }) => {
       const { success } = row.original;
 
-      return <div>{JSON.stringify(success)}</div>;
+      const solveIcon = success ? CheckIcon : XIcon;
+      const solveAlt = success ? '성공' : '실패';
+
+      return (
+        <div>
+          {success !== undefined && <Image src={solveIcon} alt={solveAlt} />}
+        </div>
+      );
     },
   },
+
   {
     accessorKey: 'title',
     header: '제목',
     cell: ({ row }) => {
-      const { title, summary, id } = row.original;
+      const { title, summary } = row.original;
 
       return (
-        <div className="max-w-[13rem]">
-          <h3 className="truncate">
-            <Link className="text-base font-semibold" href={`/quizzes/${id}`}>
-              {title}
-            </Link>
-          </h3>
+        <div className="w-[10rem]">
+          <h3 className="truncate text-base font-semibold">{title}</h3>
           <p className="truncate text-blue-500">{summary}</p>
         </div>
       );
@@ -53,16 +61,34 @@ export const columns: ColumnDef<QuizTable>[] = [
     accessorKey: 'difficulty',
     header: ({ column }) => (
       <DropdownMenu>
-        <DropdownMenuTrigger className="w-full">난이도</DropdownMenuTrigger>
+        <DropdownMenuTrigger className="w-full pr-4">
+          난이도
+        </DropdownMenuTrigger>
         <DropdownMenuContent>
           <Filter column={column} />
         </DropdownMenuContent>
       </DropdownMenu>
     ),
     cell: ({ row }) => {
-      const difficulty = String(row.getValue('difficulty'));
+      const difficulty = String(row.getValue('difficulty')) as
+        | '쉬움'
+        | '보통'
+        | '어려움';
+      const difficultyColor = cva(' -mx-4 pr-4 text-center', {
+        variants: {
+          color: {
+            쉬움: 'text-green-500',
+            보통: 'text-orange-500',
+            어려움: 'text-red-500',
+          },
+        },
+      });
 
-      return <div className="text-center">{difficulty}</div>;
+      return (
+        <div className={cn(difficultyColor({ color: difficulty }))}>
+          {difficulty}
+        </div>
+      );
     },
     filterFn: 'arrIncludesSome',
   },

@@ -82,7 +82,8 @@
   @apply my-2;
 }
 
-.markdown code::before, .markdown code::after {
+.markdown code::before,
+.markdown code::after {
   display: none;
 }
 
@@ -96,4 +97,14 @@
 
 #app-screen {
   @apply relative lg:left-1/2 mx-auto lg:mx-0 min-h-screen max-w-md;
+}
+
+pre::-webkit-scrollbar {
+  height: 5px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: hsl(var(--background));
+  border: 2px solid hsl(var(--background));
+  border-radius: 12px 12px 12px 12px;
 }

@@ -26,7 +26,7 @@ export default function Markdown({
           return language ? (
             <SyntaxHighlighter
               {...rest}
-              customStyle={{ padding: '0', overflow: 'auto' }}
+              customStyle={{ overflow: 'auto' }}
               language={language}
               style={style}
               ref={null}
