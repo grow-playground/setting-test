@@ -1,4 +1,4 @@
-import { QuizTableSchema } from '@/libs/models';
+import { QuizTable, QuizTableSchema } from '@/libs/models';
 import { createClient } from '@/utils/supabase/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { type Inputs as QuizInputs } from '@/app/quizzes/writer/_components/writer-form-schema';
@@ -43,6 +43,17 @@ const quizAPI = {
       .single();
 
     return data;
+  },
+
+  getSubmittedQuiz: async (userId: string) => {
+    const supabase: SupabaseClient<Database> = createClient();
+
+    const { data } = await supabase
+      .from('quizsubmissions')
+      .select(`success, ...quizzes!quizsubmissions_quiz_id_fkey(*)`)
+      .eq('user_id', userId);
+
+    return data as unknown as QuizTable[];
   },
 
   getChoicesOfQuiz: async (quizId: number) => {
