@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetChoicesOfQuiz, useSubmitQuiz } from '@/services/quiz/hooks';
+import { useGetChoicesOfQuiz } from '@/services/quiz/hooks';
+import { useSubmitQuizSubmission } from '@/services/quiz-submission/hook';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/button';
 import LoadingSpinner from '@/components/common/loading-spinner/loading-spinner';
@@ -17,7 +18,11 @@ export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
   const router = useRouter();
 
   const { data: choices } = useGetChoicesOfQuiz(quizId);
-  const { mutate: submitQuiz, isPending, isSuccess } = useSubmitQuiz();
+  const {
+    mutate: submitQuiz,
+    isPending,
+    isSuccess,
+  } = useSubmitQuizSubmission();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +37,8 @@ export default function ChoiceForm({ quizId, children }: ChoiceFormProps) {
       setErrorMessage('선택지를 선택해주세요.');
       return;
     }
+
+    router.refresh();
 
     submitQuiz(
       {

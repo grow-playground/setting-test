@@ -150,23 +150,6 @@ const quizAPI = {
 
     return data;
   },
-
-  postQuizSubmission: async (params: { quizId: number; choiceId: number }) => {
-    const { quizId, choiceId } = params;
-
-    const res = await fetch('/api/quiz-submission', {
-      method: 'POST',
-      body: JSON.stringify({ quizId, choiceId }),
-    });
-
-    const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json.error);
-    }
-
-    return json;
-  },
 };
 
 export default quizAPI;
