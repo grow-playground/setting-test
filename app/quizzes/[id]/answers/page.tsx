@@ -27,7 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const [submission] = await Promise.all([
     queryClient.fetchQuery(
-      quizSubmissionOptions.detailByQuiz(session?.user.id ?? '', quizId)
+      quizSubmissionOptions.detailOfQuiz(session?.user.id ?? '', quizId)
     ),
     queryClient.prefetchQuery(quizOptions.answers(quizId)),
     queryClient.prefetchQuery(commentOptions.quiz(quizId)),

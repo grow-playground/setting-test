@@ -7,7 +7,7 @@ export function useGetQuizSubmissions(userId: string) {
 }
 
 export function useGetQuizSubmission(userId: string, quizId: number) {
-  return useSuspenseQuery(quizOptions.detailByQuiz(userId, quizId));
+  return useSuspenseQuery(quizOptions.detailOfQuiz(userId, quizId));
 }
 
 export function useSubmitQuizSubmission() {

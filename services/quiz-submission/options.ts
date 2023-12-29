@@ -10,7 +10,7 @@ const quizSubmissionOptions = {
       queryFn: () => quizSubmissionAPI.getSubmissionsOfUser(userId),
     }),
 
-  detailByQuiz: (userId: string, quizId: number) => ({
+  detailOfQuiz: (userId: string, quizId: number) => ({
     queryKey: [...quizSubmissionOptions.default, userId, quizId],
     queryFn: () => quizSubmissionAPI.getSubmissionOfUser(userId, quizId),
   }),
